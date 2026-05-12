@@ -192,6 +192,30 @@ export function HeroSection() {
                 Desde $60.000/mes
               </span>
             </div>
+
+            {/* Stats bar */}
+            <div 
+              className={`absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm border-t border-white/10 transition-all duration-700 delay-500 ${
+                isVisible ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 lg:gap-16">
+                  {[
+                    { value: "16+", label: "Clientes satisfechos en Barranquilla" },
+                    { value: "5", label: "Días promedio de entrega" },
+                    { value: "1 mes", label: "Prueba a precio reducido" },
+                  ].map((stat) => (
+                    <div key={stat.label} className="flex flex-col gap-1 text-center lg:text-left">
+                      <span className="text-2xl lg:text-3xl font-display text-white">{stat.value}</span>
+                      <span className="text-xs text-white/50 leading-tight max-w-[150px]">
+                        {stat.label}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Right - Device Animation */}
