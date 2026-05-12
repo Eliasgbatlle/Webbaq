@@ -199,7 +199,7 @@ export function HeroSection() {
                 isVisible ? "opacity-100" : "opacity-0"
               }`}
             >
-              <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6">
+              <div className="max-w-[1400px] mx-auto px-0 lg:px-0 py-6">
                 <div className="flex flex-wrap items-center justify-left lg:justify-start gap-5 lg:gap-10">
                   {[
                     { value: "16+", label: "Clientes satisfechos en Barranquilla" },
