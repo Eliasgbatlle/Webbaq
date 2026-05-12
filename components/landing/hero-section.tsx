@@ -195,7 +195,7 @@ export function HeroSection() {
 
             {/* Stats bar */}
             <div 
-              className={`absolute bottom-0 left-0 right-0 bg-black/50 backdrop-blur-sm border-t border-white/10 transition-all duration-700 delay-500 ${
+              className={`bg-black/50 backdrop-blur-sm border-t border-white/10 transition-all duration-700 delay-500 ${
                 isVisible ? "opacity-100" : "opacity-0"
               }`}
             >
