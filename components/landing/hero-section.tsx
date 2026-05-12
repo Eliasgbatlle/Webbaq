@@ -192,8 +192,7 @@ export function HeroSection() {
                 Desde $60.000/mes
               </span>
             </div>
-          </div>
-                  <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6">
+                    <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6">
           <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 lg:gap-16">
             {[
               { value: "16+", label: "Clientes satisfechos en Barranquilla" },
@@ -209,6 +208,8 @@ export function HeroSection() {
             ))}
           </div>
         </div>
+          </div>
+          
           {/* Right - Device Animation */}
           <div 
             className={`relative h-[400px] lg:h-[500px] transition-all duration-1000 delay-500 ${
