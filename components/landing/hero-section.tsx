@@ -195,7 +195,7 @@ export function HeroSection() {
 
             {/* Stats bar */}
             <div 
-              className={` border-t border-white/10 transition-all duration-700 delay-500 ${
+              className={`transition-all duration-700 delay-500 ${
                 isVisible ? "opacity-100" : "opacity-0"
               }`}
             >
