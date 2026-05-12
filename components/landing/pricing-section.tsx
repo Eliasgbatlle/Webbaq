@@ -115,7 +115,7 @@ export function PricingSection() {
               isVisible ? "opacity-100" : "opacity-0"
             }`}>
               <img
-                src="/images/whales.png"
+                src="/images/whale.png"
                 alt="Imagen decorativa planes"
                 className="w-full h-full object-contain object-center"
               />
