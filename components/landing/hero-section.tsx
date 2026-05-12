@@ -200,7 +200,7 @@ export function HeroSection() {
               }`}
             >
               <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-6">
-                <div className="flex flex-wrap items-left justify-center lg:justify-start gap-8 lg:gap-16">
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-8 lg:gap-16">
                   {[
                     { value: "16+", label: "Clientes satisfechos en Barranquilla" },
                     { value: "5", label: "Días promedio de entrega" },
