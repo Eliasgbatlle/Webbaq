@@ -28,6 +28,13 @@ const socialLinks = [
 export function FooterSection() {
   return (
     <footer className="relative bg-black">
+
+    <div className="relative w-full h-[340px] md:h-[420px] overflow-hidden">
+      <img
+        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2810%29-UnDKstODkIENp5xqTYUEpt0Sm8tNOw.png"
+        alt="Bioluminescent landscape"
+        className="w-full h-full object-cover object-center"
+      />
       {/* Top gradient */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent" />
 
