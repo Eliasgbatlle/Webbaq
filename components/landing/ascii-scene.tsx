@@ -15,6 +15,7 @@ export function AsciiScene() {
   const frameRef = useRef(0);
   const timeRef = useRef(0);
   const isAnimating = useRef(true);
+  const lastFrameTime = useRef(performance.now());
 
   useEffect(() => {
     isAnimating.current = true; // Re-activamos la animación al montar
@@ -123,6 +124,10 @@ export function AsciiScene() {
 
     const render = () => {
       if (!isAnimating.current) return;
+      
+      const now = performance.now();
+      const delta = (now - lastFrameTime.current) / 1000; // delta in seconds
+      lastFrameTime.current = now;
 
       const rect = canvas.getBoundingClientRect();
       const width = rect.width || canvas.offsetWidth;
@@ -177,7 +182,7 @@ export function AsciiScene() {
         );
       }
 
-      timeRef.current += 0.008;
+      timeRef.current += delta * 0.5;
       frameRef.current = requestAnimationFrame(render);
     };
 

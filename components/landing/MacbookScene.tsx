@@ -20,6 +20,8 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     startTime: 0,
     startRotation: new THREE.Euler(),
   });
+  
+  const idleTime = useRef(0);
 
   useEffect(() => {
     scene.traverse((child) => {
@@ -47,7 +49,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     return () => video.removeEventListener('ended', onVideoEnd);
   }, [texture.source.data]);
 
-  useFrame((state) => {
+  useFrame((state, delta) => {
     if (!groupRef.current) return;
 
     const { phase, startTime, startRotation } = animationState.current;
@@ -55,7 +57,8 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     groupRef.current.position.x = isDesktop ? viewport.width / 4.5 : 0;
 
     if (phase === 'idle') {
-      const t = state.clock.getElapsedTime();
+      idleTime.current += delta;
+      const t = idleTime.current;
       groupRef.current.rotation.x = Math.sin(t * 2) * 0.015;
       groupRef.current.rotation.z = Math.cos(t * 3) * 0.01;
       groupRef.current.scale.set(1, 1, 1);
@@ -147,7 +150,7 @@ export function MacbookScene() {
           videoPath={videoSrc} 
           position={[0, -10, 0]} 
           scale={1.2} 
-          rotation-y={-0.4} // Rotación inicial hacia la izquierda
+          rotation-y={0.4} // Rotación inicial hacia la izquierda
         />
       </Suspense>
       <OrbitControls 
