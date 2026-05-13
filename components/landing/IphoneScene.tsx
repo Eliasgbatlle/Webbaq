@@ -36,9 +36,8 @@ function Model(props: any) {
   }, [screenTexture]);
 
   // Create the material for the screen
-  const screenMaterial = new THREE.MeshBasicMaterial({
+  const screenMaterial = new THREE.MeshStandardMaterial({
     map: screenTexture,
-    toneMapped: false,
   });
 
   // Asignar el material a la pantalla del modelo
