@@ -10,9 +10,8 @@ function Model(props: any) {
   const { scene } = useGLTF('/3d/iphone_12_pro.glb');
   
   // Cargar la textura de la pantalla
-  const screenTexture = useTexture('/images/Compuservicios.png');
+  const screenTexture = useTexture('/placeholder.jpg');
   screenTexture.flipY = false; // La textura GLB no necesita ser volteada
-  screenTexture.wrapT = THREE.RepeatWrapping; // Permitir que la textura se repita verticalmente
 
   // Crear el material para la pantalla
   const screenMaterial = new THREE.MeshBasicMaterial({
@@ -27,15 +26,8 @@ function Model(props: any) {
     }
   });
 
-  // Animación de scroll en la textura
+  // Animación de flotación
   useFrame((state, delta) => {
-    // Mueve el offset de la textura lentamente hacia arriba
-    screenTexture.offset.y -= delta * 0.05;
-    // Reinicia el offset para un bucle infinito
-    if (screenTexture.offset.y < -1) {
-      screenTexture.offset.y = 0;
-    }
-
     // Animación sutil de flotación para el teléfono
     if (groupRef.current) {
       groupRef.current.rotation.y += delta * 0.1;
@@ -73,4 +65,4 @@ export function IphoneScene() {
 
 // Precargar los assets para una carga más rápida
 useGLTF.preload('/3d/iphone_12_pro.glb');
-useTexture.preload('/images/Compuservicios.png');
+useTexture.preload('/placeholder.jpg');
