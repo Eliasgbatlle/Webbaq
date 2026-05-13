@@ -67,6 +67,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     const ANTICIPATION_DURATION = 300;
     const SPIN_DURATION = 1200;
     const SETTLE_DURATION = 500;
+    const overshootAngle = 0.4;
 
     if (phase === 'anticipating') {
       const progress = Math.min(elapsedTime / ANTICIPATION_DURATION, 1);
@@ -85,7 +86,6 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
       const easedProgress = 0.5 * (1 - Math.cos(Math.PI * progress)); // ease-in-out
 
       const totalRotation = Math.PI * 6;
-      const overshootAngle = 0.4;
       groupRef.current.rotation.y = startRotation.y + easedProgress * (totalRotation + overshootAngle);
 
       // Calcular velocidad para deformación (derivada de la curva de easing)
