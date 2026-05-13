@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from 'three';
-import React, { Suspense, useEffect, useMemo, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 
@@ -17,6 +17,7 @@ function Model(props: any) {
     const screenAspect = 1170 / 2532; // iPhone 12 Pro screen aspect ratio
 
     screenTexture.flipY = true; // Flip the texture to display it correctly
+    screenTexture.colorSpace = THREE.SRGBColorSpace; // Ensure correct color display
     
     // Use ClampToEdgeWrapping to prevent the texture from repeating at the edges.
     screenTexture.wrapS = THREE.ClampToEdgeWrapping;
@@ -35,20 +36,17 @@ function Model(props: any) {
   }, [screenTexture]);
 
   // Create the material for the screen
-  const screenMaterial = useMemo(() => new THREE.MeshBasicMaterial({
+  const screenMaterial = new THREE.MeshBasicMaterial({
     map: screenTexture,
     toneMapped: false,
-  }), [screenTexture]);
+  });
 
   // Asignar el material a la pantalla del modelo
-  useEffect(() => {
-    scene.traverse((child) => {
-      if ((child as THREE.Mesh).isMesh && child.name === 'Screen_Wallpaper_0') {
-        child.material = screenMaterial;
-      }
-    });
-  }, [scene, screenMaterial]);
-
+  scene.traverse((child) => {
+    if ((child as THREE.Mesh).isMesh && child.name === 'Screen_Wallpaper_0') {
+      child.material = screenMaterial;
+    }
+  });
 
   // Animación de scroll en la textura y flotación del teléfono
   useFrame((state, delta) => {
