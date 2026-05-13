@@ -17,6 +17,7 @@ export function AsciiScene() {
   const isAnimating = useRef(true);
 
   useEffect(() => {
+    isAnimating.current = true; // Re-activamos la animación al montar
     const canvas = canvasRef.current;
     if (!canvas) return;
 
