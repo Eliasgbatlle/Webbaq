@@ -19,6 +19,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     phase: 'idle', // idle, anticipating, spinning, settling
     startTime: 0,
     startRotation: new THREE.Euler(),
+    preAnimationRotation: new THREE.Euler(), // Guardar la rotación antes de la animación
   });
   
   const idleTime = useRef(0);
@@ -41,6 +42,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
           phase: 'anticipating',
           startTime: performance.now(),
           startRotation: groupRef.current.rotation.clone(),
+          preAnimationRotation: groupRef.current.rotation.clone(), // Guardar rotación de inicio
         };
       }
     };
@@ -52,7 +54,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
   useFrame((state, delta) => {
     if (!groupRef.current) return;
 
-    const { phase, startTime, startRotation } = animationState.current;
+    const { phase, startTime, startRotation, preAnimationRotation } = animationState.current;
     const isDesktop = viewport.width > 4;
     groupRef.current.position.x = isDesktop ? viewport.width / 4.5 : 0;
 
@@ -70,15 +72,17 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     const ANTICIPATION_DURATION = 300;
     const SPIN_DURATION = 1200;
     const SETTLE_DURATION = 500;
+    const anticipationAmount = 0.3;
     const overshootAngle = 0.4;
 
     if (phase === 'anticipating') {
       const progress = Math.min(elapsedTime / ANTICIPATION_DURATION, 1);
       const easedProgress = 1 - Math.pow(1 - progress, 3); // easeOut
-      groupRef.current.rotation.y = startRotation.y - easedProgress * 0.3; // Gira un poco hacia atrás
+      groupRef.current.rotation.y = startRotation.y - easedProgress * anticipationAmount;
 
       if (progress >= 1) {
         animationState.current = {
+          ...animationState.current,
           phase: 'spinning',
           startTime: performance.now(),
           startRotation: groupRef.current.rotation.clone(),
@@ -89,17 +93,16 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
       const easedProgress = 0.5 * (1 - Math.cos(Math.PI * progress)); // ease-in-out
 
       const totalRotation = Math.PI * 6;
-      groupRef.current.rotation.y = startRotation.y + easedProgress * (totalRotation + overshootAngle);
+      // Compensar la anticipación en el giro
+      groupRef.current.rotation.y = startRotation.y + easedProgress * (totalRotation + overshootAngle + anticipationAmount);
 
-      // Calcular velocidad para deformación (derivada de la curva de easing)
       const velocity = Math.sin(Math.PI * progress);
-      
-      // Aplicar deformación (Squash and Stretch)
       const deformFactor = velocity * 0.15;
       groupRef.current.scale.set(1 + deformFactor, 1 - deformFactor, 1 + deformFactor);
 
       if (progress >= 1) {
         animationState.current = {
+          ...animationState.current,
           phase: 'settling',
           startTime: performance.now(),
           startRotation: groupRef.current.rotation.clone(),
@@ -107,18 +110,17 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
       }
     } else if (phase === 'settling') {
       const progress = Math.min(elapsedTime / SETTLE_DURATION, 1);
-      const finalRotationY = startRotation.y - overshootAngle;
+      // El objetivo final es la rotación inicial + un número entero de vueltas
+      const finalRotationY = preAnimationRotation.y + Math.PI * 6;
       
-      // Spring-like settle animation
       const displacement = (startRotation.y - finalRotationY) * Math.exp(-progress * 5) * Math.cos(progress * Math.PI * 2.5);
       groupRef.current.rotation.y = finalRotationY + displacement;
 
-      // Resetear efectos
       groupRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
 
       if (progress >= 1) {
-        animationState.current = { phase: 'idle', startTime: 0, startRotation: new THREE.Euler() };
-        groupRef.current.rotation.y = finalRotationY; // Asegurar posición final
+        animationState.current = { ...animationState.current, phase: 'idle' };
+        groupRef.current.rotation.y = finalRotationY; // Asegurar posición final exacta
         groupRef.current.scale.set(1, 1, 1);
 
         const video = texture.source.data as HTMLVideoElement;
@@ -150,7 +152,7 @@ export function MacbookScene() {
           videoPath={videoSrc} 
           position={[0, -10, 0]} 
           scale={1.2} 
-          rotation-y={0.4} // Rotación inicial hacia la izquierda
+          rotation-y={-0.4} // Rotación inicial hacia la derecha
         />
       </Suspense>
       <OrbitControls 
