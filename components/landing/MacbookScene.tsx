@@ -147,7 +147,7 @@ export function MacbookScene() {
           videoPath={videoSrc} 
           position={[0, -10, 0]} 
           scale={1.2} 
-          rotation-y={0.4} // Rotación inicial hacia la izquierda
+          rotation-y={-0.4} // Rotación inicial hacia la izquierda
         />
       </Suspense>
       <OrbitControls 
