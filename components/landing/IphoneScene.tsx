@@ -44,7 +44,7 @@ function Model(props: any) {
   // Asignar el material a la pantalla del modelo
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh && child.name === 'Screen_Wallpaper_0') {
-      console.log(child);
+      console.log(child.name, child.material);
       child.material = screenMaterial;
     }
   });
