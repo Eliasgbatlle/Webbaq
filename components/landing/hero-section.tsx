@@ -72,7 +72,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black">
+    <section className="relative h-screen flex flex-col justify-center overflow-hidden bg-black">
       {/* Background 3D model */}
       <div className="absolute inset-0 z-0">
         <AsciiScene />
@@ -80,6 +80,11 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/20 via-transparent to-transparent" />
+      </div>
+
+      {/* Macbook Scene - Fullscreen absolute */}
+      <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
+        <MacbookScene />
       </div>
 
       {/* Subtle grid lines */}
@@ -100,10 +105,10 @@ export function HeroSection() {
         ))}
       </div>
       
-      <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">
+      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left content */}
-          <div>
+          <div className="pointer-events-auto">
             {/* Location badge */}
             <div 
               className={`mb-8 transition-all duration-700 ${
@@ -209,19 +214,10 @@ export function HeroSection() {
               </div>
             </div>
           </div>
-
-          {/* Right - 3D Model Animation */}
-          <div 
-            className={`relative h-[700px] lg:h-[700px] transition-all duration-1000 delay-500 ${
-              isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-            }`}
-          >
-            <MacbookScene />
-          </div>
+          {/* Right column is empty, just for spacing */}
+          <div className="hidden lg:block"></div>
         </div>
       </div>
-      
-
     </section>
   );
 }

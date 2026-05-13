@@ -2,20 +2,19 @@
 
 import * as THREE from 'three'
 import React, { Suspense, useEffect, useMemo, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
 
 function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/Macbook.glb')
+  const { viewport } = useThree();
   
-  // Le quitamos el loop al video para que el evento 'ended' se dispare
   const texture = useVideoTexture(videoPath, { loop: false })
   texture.flipY = false
 
   const screenMaterial = useMemo(() => new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }), [texture]);
 
-  // Estado para controlar la animación de rotación
   const [isRotating, setIsRotating] = useState(false);
 
   useEffect(() => {
@@ -26,51 +25,48 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     });
   }, [scene, screenMaterial]);
 
-  // Hook para detectar el final del video
   useEffect(() => {
     const video = texture.source.data as HTMLVideoElement;
     if (!video) return;
 
     const onVideoEnd = () => {
-      setIsRotating(true); // Inicia la rotación cuando el video termina
+      setIsRotating(true);
     };
 
     video.addEventListener('ended', onVideoEnd);
     return () => video.removeEventListener('ended', onVideoEnd);
   }, [texture.source.data]);
 
-  // Hook para manejar las animaciones en cada frame
   useFrame((state, delta) => {
     if (!groupRef.current) return;
 
+    // Posiciona el modelo a la derecha en pantallas grandes
+    const isDesktop = viewport.width > 4; // Aprox 768px
+    groupRef.current.position.x = isDesktop ? viewport.width / 4.5 : 0;
+
+
     if (isRotating) {
-      // Lógica de rotación (3 vueltas)
-      const rotationSpeed = Math.PI * 2; // 1 vuelta por segundo
+      const rotationSpeed = Math.PI * 2;
       groupRef.current.rotation.y += rotationSpeed * delta;
 
-      // Reseteamos el temblor
       groupRef.current.rotation.x = 0;
       groupRef.current.rotation.z = 0;
 
-      // Cuando completa las 3 vueltas (6 * PI)
       if (groupRef.current.rotation.y >= Math.PI * 6) {
-        groupRef.current.rotation.y = 0; // Resetea la rotación
-        setIsRotating(false); // Detiene la animación de rotación
+        groupRef.current.rotation.y = 0;
+        setIsRotating(false);
         
-        // Reinicia y reproduce el video
         const video = texture.source.data as HTMLVideoElement;
         video.currentTime = 0;
         video.play();
       }
     } else {
-      // Lógica de temblor sutil (shake)
       const t = state.clock.getElapsedTime();
       groupRef.current.rotation.x = Math.sin(t * 2) * 0.015;
       groupRef.current.rotation.z = Math.cos(t * 3) * 0.01;
     }
   });
 
-  // Envolvemos el modelo en un <group> para poder animarlo con el ref
   return (
     <group ref={groupRef} {...props}>
       <primitive object={scene} />
@@ -82,13 +78,12 @@ export function MacbookScene() {
   const videoSrc = "/videos/Ejkpop.mp4";
 
   return (
-    <Canvas camera={{ position: [0, 0, 50], fov: 50 }}>
+    <Canvas camera={{ position: [0, 0, 18], fov: 30 }}>
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
-        <Model videoPath={videoSrc} position={[0, -1.4, 0]} />
+        <Model videoPath={videoSrc} position={[0, -1.4, 0]} scale={1.2} />
       </Suspense>
-      {/* Quitamos autoRotate y ajustamos los ángulos para que el usuario no pueda moverlo demasiado */}
       <OrbitControls 
         enableZoom={false} 
         enablePan={false} 
