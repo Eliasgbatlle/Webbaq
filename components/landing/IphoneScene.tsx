@@ -2,12 +2,13 @@
 
 import * as THREE from 'three';
 import React, { Suspense, useEffect, useMemo, useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 
 function Model(props: any) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/iphone_12_pro.glb');
+  const { gl } = useThree(); // Obtener el renderer para acceder a sus capacidades
 
   const texture = useTexture('/images/Compuservicios.png');
 
@@ -15,8 +16,13 @@ function Model(props: any) {
   useEffect(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = false;
+    
+    // Mejorar la calidad de la textura con filtrado anisotrópico
+    const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
+    texture.anisotropy = maxAnisotropy;
+
     texture.needsUpdate = true;
-  }, [texture]);
+  }, [texture, gl]);
 
   // MATERIAL
   const screenMaterial = useMemo(
@@ -42,14 +48,9 @@ function Model(props: any) {
   // ANIMACIONES
   useFrame((state) => {
     if (groupRef.current) {
+      // Animación sutil de flotación vertical
       groupRef.current.position.y =
         -50 + Math.sin(state.clock.elapsedTime * 0.5) * 5;
-
-      groupRef.current.rotation.x =
-        Math.sin(state.clock.elapsedTime * 0.8) * 0.015;
-
-      groupRef.current.rotation.z =
-        Math.cos(state.clock.elapsedTime * 0.5) * 0.01;
     }
   });
 
@@ -64,7 +65,7 @@ export function IphoneScene() {
   return (
     <Canvas
       camera={{ position: [0, 0, 150], fov: 70 }}
-      dpr={[1, 1.5]}
+      dpr={[1, 2]} // Aumentar el device pixel ratio para mayor nitidez
       style={{ pointerEvents: 'none' }}
       gl={{ alpha: true, antialias: true }}
       onCreated={({ gl }) => {
