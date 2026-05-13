@@ -220,7 +220,7 @@ export function HeroSection() {
 
           {/* Right - 3D Model Animation */}
           <div 
-            className={`relative h-[400px] lg:h-[500px] transition-all duration-1000 delay-500 ${
+            className={`relative h-[600px] lg:h-[500px] transition-all duration-1000 delay-500 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
             }`}
           >
