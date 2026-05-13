@@ -80,7 +80,7 @@ export function IphoneScene() {
       <Suspense fallback={null}>
         <Model
           scale={1.2}
-          position={[0, -50, 0]}
+          position={[0, -70, 0]}
           rotation={[0, -0.2, 0]}
         />
       </Suspense>
