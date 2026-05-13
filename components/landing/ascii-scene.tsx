@@ -14,6 +14,7 @@ export function AsciiScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef(0);
   const timeRef = useRef(0);
+  const isAnimating = useRef(true);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -70,7 +71,8 @@ export function AsciiScene() {
       return points;
     };
 
-    const torusKnot = generateTorusKnot(2, 3, 128, 16);
+    // Reducimos la complejidad del modelo para mejorar el rendimiento
+    const torusKnot = generateTorusKnot(2, 3, 80, 12);
 
     // Rotation 3D
     const rotatePoint = (
@@ -119,6 +121,8 @@ export function AsciiScene() {
     };
 
     const render = () => {
+      if (!isAnimating.current) return;
+
       const rect = canvas.getBoundingClientRect();
       const width = rect.width || canvas.offsetWidth;
       const height = rect.height || canvas.offsetHeight;
@@ -127,7 +131,6 @@ export function AsciiScene() {
       const centerY = height * 0.5;
       const scale = Math.min(width, height) * 0.32;
 
-      // Fond transparent (section a son propre bg)
       ctx.clearRect(0, 0, width, height);
 
       const time = timeRef.current;
@@ -135,7 +138,6 @@ export function AsciiScene() {
       const angleY = time * 0.5;
       const angleZ = time * 0.2;
 
-      // Projeter et trier les points par profondeur
       const projectedPoints = torusKnot
         .map((point) => {
           const rotated = rotatePoint(point, angleX, angleY, angleZ);
@@ -143,7 +145,6 @@ export function AsciiScene() {
         })
         .sort((a, b) => a.z - b.z);
 
-      // Rendu ASCII
       const charSize = Math.max(14, Math.min(width, height) * 0.03);
       ctx.font = `${charSize}px "Geist Mono", monospace`;
       ctx.textAlign = "center";
@@ -161,8 +162,7 @@ export function AsciiScene() {
         ctx.fillText(char, point.x, point.y);
       });
 
-      // Particules flottantes
-      const particleCount = 50;
+      const particleCount = 30; // Reducimos partículas
       for (let i = 0; i < particleCount; i++) {
         const px = (Math.sin(time * 0.5 + i * 0.5) * 0.3 + 0.5) * width;
         const py = (Math.cos(time * 0.3 + i * 0.7) * 0.3 + 0.5) * height;
@@ -183,6 +183,7 @@ export function AsciiScene() {
     render();
 
     return () => {
+      isAnimating.current = false;
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(frameRef.current);
     };

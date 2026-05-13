@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
 import { MacbookScene } from "./MacbookScene";
@@ -59,6 +59,27 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
 export function HeroSection() {
   const [isVisible, setIsVisible] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsHeroVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -72,10 +93,10 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative h-screen flex flex-col justify-center overflow-hidden bg-black">
+    <section ref={sectionRef} className="relative h-screen flex flex-col justify-center overflow-hidden bg-black">
       {/* Background 3D model */}
       <div className="absolute inset-0 z-0">
-        <AsciiScene />
+        {isHeroVisible && <AsciiScene />}
         {/* Overlay gradients */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
@@ -84,7 +105,7 @@ export function HeroSection() {
 
       {/* Macbook Scene - Fullscreen absolute */}
       <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
-        <MacbookScene />
+        {isHeroVisible && <MacbookScene />}
       </div>
 
       {/* Subtle grid lines */}

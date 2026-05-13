@@ -101,7 +101,11 @@ export function MacbookScene() {
   const videoSrc = "/videos/Ejkpop.mp4";
 
   return (
-    <Canvas camera={{ position: [0, 0, 80], fov: 50 }}>
+    <Canvas 
+      camera={{ position: [0, 0, 80], fov: 50 }}
+      // Optimizacion: Limitar el Device Pixel Ratio
+      dpr={[1, 1.5]}
+    >
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
