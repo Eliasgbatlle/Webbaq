@@ -48,9 +48,9 @@ function Model(props: any) {
 
   // ANIMACIONES
   useFrame((state, delta) => {
-    // Animación de scroll en la textura
-    texture.offset.y -= delta * 0.05;
-    if (texture.offset.y < -1) {
+    // Animación de scroll en la textura (contenido se mueve hacia arriba)
+    texture.offset.y += delta * 0.05;
+    if (texture.offset.y > 1) {
       texture.offset.y = 0;
     }
 
