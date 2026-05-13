@@ -29,7 +29,7 @@ export function MacbookScene() {
   const videoSrc = "/videos/Ejkpop.mp4";
 
   return (
-    <Canvas camera={{ position: [0, 0, 14], fov: 30 }}>
+    <Canvas camera={{ position: [0, 0, 70], fov: 50 }}>
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
