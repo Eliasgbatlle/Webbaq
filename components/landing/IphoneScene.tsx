@@ -52,7 +52,7 @@ export function IphoneScene() {
       <ambientLight intensity={2} />
       <directionalLight position={[10, 10, 5]} intensity={3} />
       <Suspense fallback={null}>
-        <Model scale={1.2} position={[0, -1, 0]} rotation={[0.1, -0.2, 0.05]} />
+        <Model scale={1.2} position={[0, -10, 0]} rotation={[0.1, -0.2, 0.05]} />
       </Suspense>
       <OrbitControls 
         enabled={false}
