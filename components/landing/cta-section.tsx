@@ -85,7 +85,7 @@ export function CtaSection() {
               </div>
 
               {/* Right side - IMAGE PLACEHOLDER - CAMBIA ESTA URL POR TU IMAGEN */}
-              <div className="hidden lg:flex items-end justify-center w-[500px] h-[500px] -mr-12">
+              <div className="flex items-end justify-center w-full max-w-xs mx-auto mt-8 lg:mt-0 lg:w-[500px] lg:h-[500px] lg:max-w-none lg:-mr-12">
                 <img
                   src="/images/bridge.png"
                   alt="Conexión con clientes"
