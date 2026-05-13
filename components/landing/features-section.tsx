@@ -90,7 +90,7 @@ export function FeaturesSection() {
             return (
               <div 
                 key={feature.title}
-                className={`group relative p-8 lg:p-10 border border-foreground/10 bg-card hover:border-emerald-500/30 transition-all duration-500 ${
+                className={`group relative p-8 lg:p-10 border border-foreground/10 bg-emerald-500/5 backdrop-blur-lg rounded-2xl hover:border-emerald-500/30 transition-all duration-500 ${
                   isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
                 } ${index === 4 ? "md:col-span-2 lg:col-span-1" : ""}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
