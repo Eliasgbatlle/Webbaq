@@ -22,6 +22,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
   });
   
   const idleTime = useRef(0);
+  const initialRotationY = useRef(props['rotation-y'] || 0); // Almacena la rotación inicial
 
   useEffect(() => {
     scene.traverse((child) => {
@@ -37,6 +38,8 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
 
     const onVideoEnd = () => {
       if (groupRef.current) {
+        // Almacena la rotación exacta antes de que comience la animación
+        initialRotationY.current = groupRef.current.rotation.y;
         animationState.current = {
           phase: 'anticipating',
           startTime: performance.now(),
@@ -59,6 +62,8 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     if (phase === 'idle') {
       idleTime.current += delta;
       const t = idleTime.current;
+      // Usa la rotación inicial como centro para el balanceo
+      groupRef.current.rotation.y = initialRotationY.current + Math.sin(t * 1.5) * 0.02;
       groupRef.current.rotation.x = Math.sin(t * 2) * 0.015;
       groupRef.current.rotation.z = Math.cos(t * 3) * 0.01;
       groupRef.current.scale.set(1, 1, 1);
@@ -75,7 +80,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
     if (phase === 'anticipating') {
       const progress = Math.min(elapsedTime / ANTICIPATION_DURATION, 1);
       const easedProgress = 1 - Math.pow(1 - progress, 3); // easeOut
-      groupRef.current.rotation.y = startRotation.y - easedProgress * 0.3; // Gira un poco hacia atrás
+      groupRef.current.rotation.y = startRotation.y - easedProgress * 0.3;
 
       if (progress >= 1) {
         animationState.current = {
@@ -91,10 +96,8 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
       const totalRotation = Math.PI * 6;
       groupRef.current.rotation.y = startRotation.y + easedProgress * (totalRotation + overshootAngle);
 
-      // Calcular velocidad para deformación (derivada de la curva de easing)
       const velocity = Math.sin(Math.PI * progress);
       
-      // Aplicar deformación (Squash and Stretch)
       const deformFactor = velocity * 0.15;
       groupRef.current.scale.set(1 + deformFactor, 1 - deformFactor, 1 + deformFactor);
 
@@ -107,19 +110,19 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
       }
     } else if (phase === 'settling') {
       const progress = Math.min(elapsedTime / SETTLE_DURATION, 1);
-      const finalRotationY = startRotation.y - overshootAngle;
+      // El objetivo es la rotación que guardamos antes de que comenzara la animación
+      const targetRotationY = initialRotationY.current;
       
-      // Spring-like settle animation
-      const displacement = (startRotation.y - finalRotationY) * Math.exp(-progress * 5) * Math.cos(progress * Math.PI * 2.5);
-      groupRef.current.rotation.y = finalRotationY + displacement;
+      const displacement = (startRotation.y - targetRotationY) * Math.exp(-progress * 5) * Math.cos(progress * Math.PI * 2.5);
+      groupRef.current.rotation.y = targetRotationY + displacement;
 
-      // Resetear efectos
       groupRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
 
       if (progress >= 1) {
         animationState.current = { phase: 'idle', startTime: 0, startRotation: new THREE.Euler() };
-        groupRef.current.rotation.y = finalRotationY; // Asegurar posición final
+        groupRef.current.rotation.y = targetRotationY; // Asegura que la posición final sea exacta
         groupRef.current.scale.set(1, 1, 1);
+        idleTime.current = 0; // Reinicia el temporizador de inactividad
 
         const video = texture.source.data as HTMLVideoElement;
         video.currentTime = 0;
@@ -150,7 +153,7 @@ export function MacbookScene() {
           videoPath={videoSrc} 
           position={[0, -10, 0]} 
           scale={1.2} 
-          rotation-y={0.4} // Rotación inicial hacia la izquierda
+          rotation-y={-0.4} // Rotación inicial cambiada
         />
       </Suspense>
       <OrbitControls 

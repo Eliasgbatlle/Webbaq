@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Smartphone, Globe, TrendingUp, HeadphonesIcon } from "lucide-react";
+import { IphoneScene } from "./IphoneScene";
 
 const features = [
   { 
@@ -45,17 +46,12 @@ export function DevelopersSection() {
   return (
     <section id="developers" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
 
-      {/* IMAGE PLACEHOLDER - CAMBIA ESTA URL POR TU IMAGEN */}
       <div
         className={`absolute bottom-0 right-0 w-[55%] h-[85%] pointer-events-none transition-all duration-1000 delay-300 ${
           isVisible ? "opacity-100" : "opacity-0"
         }`}
       >
-        <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2813%29-OQ2DiR3ElVsUg8kTvTL1kC5A3Q6maM.png"
-          alt="Ilustración de diseño web"
-          className="w-full h-full object-cover object-left-top"
-        />
+        <IphoneScene />
         {/* Fade left edge */}
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
         {/* Fade top edge */}
