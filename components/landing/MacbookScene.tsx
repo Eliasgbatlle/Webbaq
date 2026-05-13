@@ -4,18 +4,23 @@ import * as THREE from 'three'
 import React, { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
-import { EffectComposer, MotionBlur } from '@react-three/postprocessing'
-import { gsap } from 'gsap'
 
 function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/Macbook.glb')
   const { viewport } = useThree();
   
-  const texture = useVideoTexture(videoPath, { loop: false, start: true, muted: true })
+  const texture = useVideoTexture(videoPath, { loop: false })
   texture.flipY = false
 
   const screenMaterial = useMemo(() => new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }), [texture]);
+
+  // Usamos useRef para el estado de la animación para evitar re-renders en cada frame.
+  const animationState = useRef({
+    isRotating: false,
+    startTime: 0,
+    startRotation: 0,
+  });
 
   useEffect(() => {
     scene.traverse((child) => {
@@ -27,48 +32,57 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
 
   useEffect(() => {
     const video = texture.source.data as HTMLVideoElement;
-    if (!video || !groupRef.current) return;
+    if (!video) return;
 
     const onVideoEnd = () => {
-      if (!groupRef.current) return;
-
-      // --- LÓGICA DE ANIMACIÓN CON GSAP ---
-      const tl = gsap.timeline({
-        onComplete: () => {
-          // Al terminar la animación, reinicia el video.
-          video.currentTime = 0;
-          video.play();
-        }
-      });
-
-      // 1. Anticipación (retroceso)
-      tl.to(groupRef.current.rotation, {
-        y: "-=0.3", // Gira un poco hacia atrás
-        duration: 0.4,
-        ease: "power2.out"
-      });
-
-      // 2. Giro principal rápido con overshoot
-      tl.to(groupRef.current.rotation, {
-        y: `+=${Math.PI * 6 + 0.5}`, // 3 giros completos + un poco más
-        duration: 1.6, // Más rápido
-        ease: "power3.inOut" // Acelera y desacelera fuertemente
-      }, "-=0.2"); // Empieza un poco antes de que termine la anterior
-
-      // 3. Asentamiento (settle)
-      tl.to(groupRef.current.rotation, {
-        y: `-=0.2`, // Vuelve a la posición correcta
-        duration: 0.5,
-        ease: "elastic.out(1, 0.75)"
-      });
+      if (groupRef.current) {
+        // Inicia el estado de la animación
+        animationState.current = {
+          isRotating: true,
+          startTime: performance.now(),
+          startRotation: groupRef.current.rotation.y,
+        };
+      }
     };
 
     video.addEventListener('ended', onVideoEnd);
     return () => video.removeEventListener('ended', onVideoEnd);
   }, [texture.source.data]);
 
-  useFrame((state) => {
-    if (groupRef.current && !gsap.isTweening(groupRef.current.rotation)) {
+  useFrame((state, delta) => {
+    if (!groupRef.current) return;
+
+    // Posiciona el modelo a la derecha en pantallas grandes
+    const isDesktop = viewport.width > 4; // Aprox 768px
+    groupRef.current.position.x = isDesktop ? viewport.width / 4.5 : 0;
+
+    if (animationState.current.isRotating) {
+      // --- NUEVA LÓGICA DE ANIMACIÓN CON ACELERACIÓN ---
+      const animationDuration = 2000; // 2 segundos. Ajusta esto para cambiar la velocidad.
+      const elapsedTime = performance.now() - animationState.current.startTime;
+      let progress = elapsedTime / animationDuration;
+
+      if (progress >= 1) {
+        progress = 1;
+        animationState.current.isRotating = false;
+        
+        // Cuando la animación termina, reinicia el video para el siguiente ciclo.
+        const video = texture.source.data as HTMLVideoElement;
+        video.currentTime = 0;
+        video.play();
+      }
+
+      // Función de easing "ease-in-out": empieza lento, acelera y termina lento.
+      const easedProgress = 0.5 * (1 - Math.cos(Math.PI * progress));
+      
+      const totalRotation = Math.PI * 6; // 3 giros completos
+      groupRef.current.rotation.y = animationState.current.startRotation + totalRotation * easedProgress;
+
+      // Mantiene las otras rotaciones estables durante el giro principal.
+      groupRef.current.rotation.x = 0;
+      groupRef.current.rotation.z = 0;
+
+    } else {
       // Animación suave de flotación cuando no está girando.
       const t = state.clock.getElapsedTime();
       groupRef.current.rotation.x = Math.sin(t * 2) * 0.015;
@@ -89,19 +103,13 @@ export function MacbookScene() {
   return (
     <Canvas 
       camera={{ position: [0, 0, 80], fov: 50 }}
+      // Optimizacion: Limitar el Device Pixel Ratio
       dpr={[1, 1.5]}
     >
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
-        <EffectComposer>
-          <Model videoPath={videoSrc} position={[0, -10, 0]} scale={1.2} />
-          <MotionBlur
-            intensity={0.3} // Ajusta la intensidad del desenfoque
-            velocityFactor={0.2}
-            delta={0.016}
-          />
-        </EffectComposer>
+        <Model videoPath={videoSrc} position={[0, -10, 0]} scale={1.2} />
       </Suspense>
       <OrbitControls 
         enabled={false}
