@@ -3,18 +3,22 @@
 import { useState, useEffect, useRef } from "react";
 
 export function SerpentineLine() {
-  const pathRef = useRef<SVGPathElement>(null);
+  const pathRef1 = useRef<SVGPathElement>(null);
+  const pathRef2 = useRef<SVGPathElement>(null);
+  const pathRef3 = useRef<SVGPathElement>(null);
   const svgRef = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
-    const path = pathRef.current;
+    const paths = [pathRef1.current, pathRef2.current, pathRef3.current];
     const svg = svgRef.current;
-    if (!path || !svg) return;
+    if (!svg || paths.some(p => !p)) return;
 
-    // Set initial styles
-    const length = path.getTotalLength();
-    path.style.strokeDasharray = `${length}`;
-    path.style.strokeDashoffset = `${length}`;
+    const lengths = paths.map(p => p!.getTotalLength());
+
+    paths.forEach((path, i) => {
+      path!.style.strokeDasharray = `${lengths[i]}`;
+      path!.style.strokeDashoffset = `${lengths[i]}`;
+    });
 
     const updateSvgHeight = () => {
       svg.style.height = `${document.documentElement.scrollHeight}px`;
@@ -25,25 +29,21 @@ export function SerpentineLine() {
       const innerHeight = window.innerHeight;
       const scrollY = window.scrollY;
 
-      // Start animation after the hero section (100vh)
-      const scrollStart = innerHeight;
-      
-      // The total distance over which the animation should occur
-      const animationDistance = scrollHeight - scrollStart - (innerHeight * 0.5); // End a bit before the absolute bottom
+      const scrollStart = innerHeight * 0.8; // Start animation a bit earlier
+      const animationDistance = scrollHeight - scrollStart - (innerHeight * 0.8);
 
-      // Current scroll position relative to the animation's start point
       const currentScroll = scrollY - scrollStart;
-      
-      // Calculate progress, clamped between 0 and 1
       let progress = currentScroll / animationDistance;
       progress = Math.max(0, Math.min(1, progress));
 
-      const newDashoffset = length * (1 - progress);
-      path.style.strokeDashoffset = `${newDashoffset}`;
+      paths.forEach((path, i) => {
+        const newDashoffset = lengths[i] * (1 - progress);
+        path!.style.strokeDashoffset = `${newDashoffset}`;
+      });
     };
 
     updateSvgHeight();
-    handleScroll(); // Initial call
+    handleScroll();
 
     const resizeObserver = new ResizeObserver(() => {
       updateSvgHeight();
@@ -60,11 +60,11 @@ export function SerpentineLine() {
   }, []);
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-30 hidden lg:block">
+    <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-10 hidden lg:block">
       <svg 
         ref={svgRef}
         width="100%" 
-        viewBox="0 0 1400 7000" // A large viewBox to accommodate the full page height
+        viewBox="0 0 1400 7000"
         preserveAspectRatio="xMidYMax meet"
       >
         <defs>
@@ -75,8 +75,10 @@ export function SerpentineLine() {
             <stop offset="100%" stopColor="rgba(16, 185, 129, 0)" />
           </linearGradient>
         </defs>
+        
+        {/* Main Serpentine Line */}
         <path
-          ref={pathRef}
+          ref={pathRef1}
           d="M 250 1100 
              C 250 1300, 1150 1500, 1150 1700 
              S 250 1900, 250 2100
@@ -93,6 +95,36 @@ export function SerpentineLine() {
           stroke="url(#line-gradient)"
           strokeWidth="1.5"
           strokeLinecap="round"
+        />
+
+        {/* Secondary, counter-point line */}
+        <path
+          ref={pathRef2}
+          d="M 1150 1200
+             C 1150 1400, 250 1600, 250 1800
+             S 1150 2000, 1150 2200
+             C 1150 2400, 250 2600, 250 2800
+             S 1150 3000, 1150 3200
+             C 1150 3400, 250 3600, 250 3800
+             S 1150 4000, 1150 4200
+             C 1150 4400, 250 4600, 250 4800
+             S 1150 5000, 1150 5200
+             C 1150 5400, 250 5600, 250 5800
+             S 1150 6000, 1150 6200
+             L 1150 7000"
+          fill="none"
+          stroke="rgba(16, 185, 129, 0.2)"
+          strokeWidth="1"
+        />
+
+        {/* Central dashed line */}
+        <path
+          ref={pathRef3}
+          d="M 700 1000 L 700 7000"
+          fill="none"
+          stroke="rgba(16, 185, 129, 0.15)"
+          strokeWidth="1"
+          strokeDasharray="5 15"
         />
       </svg>
     </div>
