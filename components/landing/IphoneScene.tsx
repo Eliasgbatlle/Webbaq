@@ -16,9 +16,7 @@ function Model(props: any) {
     const imageAspect = 390 / 9622;
     const screenAspect = 1170 / 2532; // iPhone 12 Pro screen aspect ratio
 
-    screenTexture.flipY = true; // Flip the texture to display it correctly
-    screenTexture.colorSpace = THREE.SRGBColorSpace; // Ensure correct color display
-    
+    screenTexture.flipY = false;
     // Use ClampToEdgeWrapping to prevent the texture from repeating at the edges.
     screenTexture.wrapS = THREE.ClampToEdgeWrapping;
     screenTexture.wrapT = THREE.ClampToEdgeWrapping;
