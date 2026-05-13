@@ -3,7 +3,7 @@
 import * as THREE from 'three'
 import React, { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
-import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
+import { useGLTF, useVideoTexture } from '@react-three/drei'
 
 function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
   const groupRef = useRef<THREE.Group>(null);
@@ -124,8 +124,10 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
         groupRef.current.scale.set(1, 1, 1);
 
         const video = texture.source.data as HTMLVideoElement;
-        video.currentTime = 0;
-        video.play();
+        if (video) {
+          video.currentTime = 0;
+          video.play();
+        }
       }
     }
   });
@@ -155,13 +157,6 @@ export function MacbookScene() {
           rotation-y={-0.4} // Rotación inicial hacia la derecha
         />
       </Suspense>
-      <OrbitControls 
-        enabled={false}
-        enableZoom={false} 
-        enablePan={false} 
-        minPolarAngle={Math.PI / 2.3} 
-        maxPolarAngle={Math.PI / 2.3} 
-      />
     </Canvas>
   );
 }

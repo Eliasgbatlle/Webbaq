@@ -6,7 +6,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { Text3D, Center, OrbitControls } from '@react-three/drei';
 
 function LogoText() {
-  const ref = useRef<THREE.Mesh>(null!);
+  const ref = useRef<THREE.Mesh | null>(null);
 
   useFrame((state, delta) => {
     if (ref.current) {
