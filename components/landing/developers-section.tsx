@@ -52,8 +52,8 @@ export function DevelopersSection() {
         }`}
       >
         <img
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Upscaled%20Image%20%2813%29-OQ2DiR3ElVsUg8kTvTL1kC5A3Q6maM.png"
-          alt="Ilustración de diseño web"
+          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/digital-growth-XlJd5AFd2gKk9x3s2hQp3Z5A0s8p2G.png"
+          alt="Ilustración de crecimiento digital"
           className="w-full h-full object-cover object-left-top"
         />
         {/* Fade left edge */}
