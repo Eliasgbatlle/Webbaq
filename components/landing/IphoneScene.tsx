@@ -13,6 +13,9 @@ function Model(props: any) {
   const screenTexture = useTexture('/images/Compuservicios.png');
   screenTexture.flipY = false; // La textura GLB no necesita ser volteada
   screenTexture.wrapT = THREE.RepeatWrapping; // Permitir que la textura se repita verticalmente
+  
+  // Ajustar la repetición de la textura para corregir el estiramiento
+  screenTexture.repeat.set(2, 1); // Aumentar el valor x para "comprimir" la imagen horizontalmente
 
   // Crear el material para la pantalla
   const screenMaterial = new THREE.MeshBasicMaterial({
