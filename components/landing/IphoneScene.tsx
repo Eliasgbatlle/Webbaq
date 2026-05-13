@@ -66,7 +66,7 @@ function Model(props: any) {
 export function IphoneScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 100], fov: 70 }}
+      camera={{ position: [0, 0, 90], fov: 70 }}
       dpr={[1, 1.5]} // Optimizado
       style={{ pointerEvents: 'none' }}
       gl={{ alpha: true, antialias: true }}
@@ -80,7 +80,7 @@ export function IphoneScene() {
       <Suspense fallback={null}>
         <Model
           scale={1.2}
-          position={[0, -60, 0]}
+          position={[0, -55, 0]}
           rotation={[0, -0.2, 0]}
         />
       </Suspense>
