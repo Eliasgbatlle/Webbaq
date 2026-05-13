@@ -48,8 +48,11 @@ function Model(props: any) {
 
   // ANIMACIONES
   useFrame((state, delta) => {
-    // Animación de scroll en la textura (de abajo hacia arriba)
-    texture.offset.y = (texture.offset.y + delta * 0.05) % 1;
+    // Animación de scroll en la textura
+    texture.offset.y -= delta * 0.05;
+    if (texture.offset.y < -1) {
+      texture.offset.y = 0;
+    }
 
     if (groupRef.current) {
       // Animación sutil de flotación vertical
