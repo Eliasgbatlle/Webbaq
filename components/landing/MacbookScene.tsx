@@ -42,7 +42,7 @@ function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any 
 
     // Posiciona el modelo a la derecha en pantallas grandes
     const isDesktop = viewport.width > 4; // Aprox 768px
-    groupRef.current.position.x = isDesktop ? viewport.width / 4.5 : 0;
+    groupRef.current.position.x = isDesktop ? viewport.width / 4 : 0;
 
 
     if (isRotating) {
