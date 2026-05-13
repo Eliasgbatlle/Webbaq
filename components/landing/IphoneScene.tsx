@@ -16,7 +16,7 @@ function Model(props: any) {
     const imageAspect = 390 / 9622;
     const screenAspect = 1170 / 2532; // iPhone 12 Pro screen aspect ratio
 
-    screenTexture.flipY = false; // Correct orientation for GLTF models
+    screenTexture.flipY = true; // Flip the texture to display it correctly
     
     // Use ClampToEdgeWrapping to prevent the texture from repeating at the edges.
     screenTexture.wrapS = THREE.ClampToEdgeWrapping;
@@ -24,18 +24,19 @@ function Model(props: any) {
     
     // To prevent distortion, the aspect ratio of the texture part we display
     // must match the aspect ratio of the screen mesh.
+    // So, repeat.y = imageAspect / screenAspect.
     screenTexture.repeat.set(1, imageAspect / screenAspect);
 
     // Start the scroll from the top of the image.
+    // The visible V-coordinates are from offset.y to offset.y + repeat.y.
+    // To show the top part (V from 1-repeat.y to 1), offset.y must be 1-repeat.y.
     screenTexture.offset.y = 1 - screenTexture.repeat.y;
 
   }, [screenTexture]);
 
   // Create the material for the screen
-  const screenMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+  const screenMaterial = useMemo(() => new THREE.MeshBasicMaterial({
     map: screenTexture,
-    emissiveMap: screenTexture,
-    emissive: 0xffffff,
     toneMapped: false,
   }), [screenTexture]);
 
