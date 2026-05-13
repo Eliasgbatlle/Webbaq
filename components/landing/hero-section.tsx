@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
+import { MacbookScene } from "./MacbookScene";
 
 const words = ["restaurantes", "tiendas", "salones", "gimnasios"];
 
@@ -217,21 +218,13 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Right - Video Animation */}
+          {/* Right - 3D Model Animation */}
           <div 
             className={`relative h-[400px] lg:h-[500px] transition-all duration-1000 delay-500 ${
               isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
             }`}
           >
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-contain"
-            >
-              <source src="/videos/0001-0960.webm" type="video/webm" />
-            </video>
+            <MacbookScene />
           </div>
         </div>
       </div>
