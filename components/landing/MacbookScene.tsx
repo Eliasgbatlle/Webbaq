@@ -8,32 +8,40 @@ import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
 function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
   const { scene } = useGLTF('/3d/Macbook.glb')
   
-  // useVideoTexture ahora recibe una sola ruta de video para evitar errores si una no existe.
   const texture = useVideoTexture(videoPath)
-  texture.flipY = false // Importante para modelos GLB
+  texture.flipY = false
 
-  const screenMaterial = useMemo(() => new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }), [texture]);
+  const screenMaterial = useMemo(() => {
+    console.log("Creando material de video. Textura:", texture);
+    return new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+  }, [texture]);
 
   useEffect(() => {
+    let screenFound = false;
+    console.log("Recorriendo la escena 3D para encontrar la pantalla...");
     scene.traverse((child) => {
-      // Basado en tu captura, la malla de la pantalla es 'Cube_001'
+      // Imprimimos cada parte del modelo para encontrar el nombre correcto de la pantalla
+      console.log("Nodo encontrado:", child.name, "| Tipo:", child.type);
       if ((child as THREE.Mesh).isMesh && child.name === 'Cube_001') {
+        console.log("¡PANTALLA ENCONTRADA! Aplicando material de video a:", child.name);
         child.material = screenMaterial;
+        screenFound = true;
       }
     });
+    if (!screenFound) {
+      console.error("ERROR: No se encontró la malla de la pantalla con el nombre 'Cube_001'. Por favor, revisa la consola para ver la lista de nodos y encontrar el nombre correcto.");
+    }
   }, [scene, screenMaterial]);
 
-  // El objeto primitive renderizará todo el grafo de la escena
   return <primitive object={scene} {...props} />
 }
 
 export function MacbookScene() {
-  // Simplificamos a una sola fuente de video para asegurar que se encuentre.
-  // Asegúrate de que el archivo /public/videos/Ejkpop.mp4 existe.
   const videoSrc = "/videos/Ejkpop.mp4";
+  console.log("Intentando cargar video desde la ruta pública:", videoSrc);
 
   return (
-    <Canvas camera={{ position: [0, 0, 70], fov: 50 }}>
+    <Canvas camera={{ position: [0, 0, 14], fov: 30 }}>
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
