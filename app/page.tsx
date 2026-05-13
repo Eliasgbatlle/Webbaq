@@ -10,26 +10,22 @@ import { CoverageSection } from "@/components/landing/coverage-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
 import { FooterSection } from "@/components/landing/footer-section";
-import InteractiveBackground from "@/components/landing/InteractiveBackground";
 
 export default function Home() {
   return (
-    <>
-      <InteractiveBackground />
-      <main className="relative min-h-screen overflow-x-hidden bg-transparent">
-        <Navigation />
-        <HeroSection />
-        <FeaturesSection />
-        <SectorsSection />
-        <DevelopersSection />
-        <PricingSection />
-        <HowItWorksSection />
-        <TestimonialsSection />
-        <CoverageSection />
-        <FaqSection />
-        <CtaSection />
-        <FooterSection />
-      </main>
-    </>
+    <main className="relative min-h-screen overflow-x-hidden">
+      <Navigation />
+      <HeroSection />
+      <FeaturesSection />
+      <SectorsSection />
+      <DevelopersSection />
+      <PricingSection />
+      <HowItWorksSection />
+      <TestimonialsSection />
+      <CoverageSection />
+      <FaqSection />
+      <CtaSection />
+      <FooterSection />
+    </main>
   );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
 import { MacbookScene } from "./MacbookScene";
+import { AsciiScene } from "./ascii-scene";
 
 const words = ["restaurantes", "tiendas", "salones", "gimnasios"];
 
@@ -92,9 +93,16 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen flex flex-col justify-center overflow-hidden bg-transparent">
-      {/* Background is now handled globally */}
-      
+    <section ref={sectionRef} className="relative h-screen flex flex-col justify-center overflow-hidden bg-black">
+      {/* Background 3D model */}
+      <div className="absolute inset-0 z-0">
+        {isHeroVisible && <AsciiScene />}
+        {/* Overlay gradients */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-emerald-900/20 via-transparent to-transparent" />
+      </div>
+
       {/* Macbook Scene - Fullscreen absolute */}
       <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
         {isHeroVisible && <MacbookScene />}
