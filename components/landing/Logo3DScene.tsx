@@ -18,6 +18,7 @@ function LogoText() {
     <Center>
       <Text3D
         ref={ref}
+        font="/fonts/Instrument_Sans_Regular.json"
         height={5}
         size={20}
         bevelEnabled
