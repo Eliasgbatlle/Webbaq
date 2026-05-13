@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
 import { MacbookScene } from "./MacbookScene";
+import { AsciiScene } from "./ascii-scene";
 
 const words = ["restaurantes", "tiendas", "salones", "gimnasios"];
 
@@ -72,18 +73,9 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black">
-      {/* Background video - CAMBIA ESTA URL POR TU PROPIO VIDEO */}
+      {/* Background 3D model */}
       <div className="absolute inset-0 z-0">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          aria-hidden="true"
-          className="w-full h-full object-cover object-center opacity-80"
-        >
-          <source src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/bg-hero-0BnFGdr81Ifnj3WbBZoNt1KE4D5DMT.mp4" type="video/mp4" />
-        </video>
+        <AsciiScene />
         {/* Overlay gradients */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
