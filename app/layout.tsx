@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { SerpentineLines } from "@/components/landing/serpentine-lines";
 
 const instrumentSans = Instrument_Sans({ 
   subsets: ["latin"],
@@ -35,6 +36,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background`}>
+        <SerpentineLines />
         {children}
         <Analytics />
       </body>
