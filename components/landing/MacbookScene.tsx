@@ -5,9 +5,10 @@ import React, { Suspense, useEffect, useMemo } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
 
-function Model({ videoPath, ...props }: { videoPath: string | string[], [key: string]: any }) {
+function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
   const { scene } = useGLTF('/3d/Macbook.glb')
   
+  // useVideoTexture ahora recibe una sola ruta de video para evitar errores si una no existe.
   const texture = useVideoTexture(videoPath)
   texture.flipY = false // Importante para modelos GLB
 
@@ -27,16 +28,16 @@ function Model({ videoPath, ...props }: { videoPath: string | string[], [key: st
 }
 
 export function MacbookScene() {
-  // Es buena práctica proveer múltiples formatos. El navegador elegirá el más eficiente.
-  // Si solo tienes .mp4, puedes dejar solo esa ruta en el array.
-  const videoSources = ["/videos/Ejkpop.webm", "/videos/Ejkpop.mp4"];
+  // Simplificamos a una sola fuente de video para asegurar que se encuentre.
+  // Asegúrate de que el archivo /public/videos/Ejkpop.mp4 existe.
+  const videoSrc = "/videos/Ejkpop.mp4";
 
   return (
     <Canvas camera={{ position: [0, 0, 14], fov: 30 }}>
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
-        <Model videoPath={videoSources} position={[0, -1.4, 0]} />
+        <Model videoPath={videoSrc} position={[0, -1.4, 0]} />
       </Suspense>
       <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.4} minPolarAngle={Math.PI / 2.3} maxPolarAngle={Math.PI / 2.3} />
     </Canvas>
