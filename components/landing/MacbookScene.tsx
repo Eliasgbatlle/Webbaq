@@ -4,9 +4,8 @@ import * as THREE from 'three'
 import React, { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
-import { EffectComposer, MotionBlur } from '@react-three/postprocessing'
 
-function Model({ videoPath, motionBlurRef, ...props }: { videoPath: string, motionBlurRef: React.RefObject<any>, [key: string]: any }) {
+function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/Macbook.glb')
   const { viewport } = useThree();
@@ -49,7 +48,7 @@ function Model({ videoPath, motionBlurRef, ...props }: { videoPath: string, moti
   }, [texture.source.data]);
 
   useFrame((state) => {
-    if (!groupRef.current || !motionBlurRef.current) return;
+    if (!groupRef.current) return;
 
     const { phase, startTime, startRotation } = animationState.current;
     const isDesktop = viewport.width > 4;
@@ -59,7 +58,6 @@ function Model({ videoPath, motionBlurRef, ...props }: { videoPath: string, moti
       const t = state.clock.getElapsedTime();
       groupRef.current.rotation.x = Math.sin(t * 2) * 0.015;
       groupRef.current.rotation.z = Math.cos(t * 3) * 0.01;
-      motionBlurRef.current.intensity = 0;
       groupRef.current.scale.set(1, 1, 1);
       return;
     }
@@ -90,12 +88,9 @@ function Model({ videoPath, motionBlurRef, ...props }: { videoPath: string, moti
       const overshootAngle = 0.4;
       groupRef.current.rotation.y = startRotation.y + easedProgress * (totalRotation + overshootAngle);
 
-      // Calcular velocidad para deformación y motion blur (derivada de la curva de easing)
+      // Calcular velocidad para deformación (derivada de la curva de easing)
       const velocity = Math.sin(Math.PI * progress);
       
-      // Aplicar Motion Blur
-      motionBlurRef.current.intensity = velocity * 2.5;
-
       // Aplicar deformación (Squash and Stretch)
       const deformFactor = velocity * 0.15;
       groupRef.current.scale.set(1 + deformFactor, 1 - deformFactor, 1 + deformFactor);
@@ -116,14 +111,12 @@ function Model({ videoPath, motionBlurRef, ...props }: { videoPath: string, moti
       groupRef.current.rotation.y = finalRotationY + displacement;
 
       // Resetear efectos
-      motionBlurRef.current.intensity *= (1 - progress);
       groupRef.current.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
 
       if (progress >= 1) {
         animationState.current = { phase: 'idle', startTime: 0, startRotation: new THREE.Euler() };
         groupRef.current.rotation.y = finalRotationY; // Asegurar posición final
         groupRef.current.scale.set(1, 1, 1);
-        motionBlurRef.current.intensity = 0;
 
         const video = texture.source.data as HTMLVideoElement;
         video.currentTime = 0;
@@ -141,7 +134,6 @@ function Model({ videoPath, motionBlurRef, ...props }: { videoPath: string, moti
 
 export function MacbookScene() {
   const videoSrc = "/videos/Ejkpop.mp4";
-  const motionBlurRef = useRef<any>(null);
 
   return (
     <Canvas 
@@ -151,16 +143,12 @@ export function MacbookScene() {
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
-        <EffectComposer>
-          <Model 
-            videoPath={videoSrc} 
-            position={[0, -10, 0]} 
-            scale={1.2} 
-            rotation-y={0.4} // Rotación inicial hacia la izquierda
-            motionBlurRef={motionBlurRef} 
-          />
-          <MotionBlur ref={motionBlurRef} intensity={0} />
-        </EffectComposer>
+        <Model 
+          videoPath={videoSrc} 
+          position={[0, -10, 0]} 
+          scale={1.2} 
+          rotation-y={0.4} // Rotación inicial hacia la izquierda
+        />
       </Suspense>
       <OrbitControls 
         enabled={false}
