@@ -64,7 +64,7 @@ function Model(props: any) {
 export function IphoneScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 150], fov: 70 }}
+      camera={{ position: [0, 0, 130], fov: 70 }}
       dpr={[1, 2]} // Aumentar el device pixel ratio para mayor nitidez
       style={{ pointerEvents: 'none' }}
       gl={{ alpha: true, antialias: true }}
