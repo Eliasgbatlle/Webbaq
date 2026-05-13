@@ -16,13 +16,22 @@ function Model(props: any) {
   texture.wrapT = THREE.RepeatWrapping;
   texture.repeat.set(1, 1);
 
+  // Usando MeshBasicMaterial como en la escena del Macbook para evitar problemas de iluminación.
   const screenMaterial = useMemo(() => new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }), [texture]);
 
   useEffect(() => {
     scene.traverse((child) => {
-      // Apuntamos directamente al material de la pantalla usando el nombre que proporcionaste
-      if ((child as THREE.Mesh).isMesh && child.material.name === 'Scree_Wallpaper_0') {
-        (child as THREE.Mesh).material = screenMaterial;
+      // El nombre de la malla/material de la pantalla puede variar. Probando con los más comunes.
+      if ((child as THREE.Mesh).isMesh) {
+        const mesh = child as THREE.Mesh;
+        // Nombres comunes para la malla de la pantalla
+        const screenMeshNames = ['screen', 'Screen', 'display', 'Display'];
+        // Nombres comunes para el material de la pantalla
+        const screenMaterialNames = ['Display', 'screen'];
+
+        if (screenMeshNames.includes(mesh.name) || (mesh.material && screenMaterialNames.includes(mesh.material.name))) {
+          mesh.material = screenMaterial;
+        }
       }
     });
   }, [scene, screenMaterial]);
