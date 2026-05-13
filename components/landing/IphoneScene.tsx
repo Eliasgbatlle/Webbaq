@@ -16,20 +16,21 @@ function Model(props: any) {
     const imageAspect = 390 / 9622;
     const screenAspect = 1170 / 2532; // iPhone 12 Pro screen aspect ratio
 
-    screenTexture.flipY = false;
+    // useTexture defaults flipY to true, which is what we need to orient the image correctly.
+    
+    // Explicitly set color space to sRGB for correct color representation.
+    screenTexture.colorSpace = THREE.SRGBColorSpace;
+
     // Use ClampToEdgeWrapping to prevent the texture from repeating at the edges.
     screenTexture.wrapS = THREE.ClampToEdgeWrapping;
     screenTexture.wrapT = THREE.ClampToEdgeWrapping;
     
     // To prevent distortion, the aspect ratio of the texture part we display
     // must match the aspect ratio of the screen mesh.
-    // So, repeat.y = imageAspect / screenAspect.
     screenTexture.repeat.set(1, imageAspect / screenAspect);
 
     // Start the scroll from the top of the image.
-    // The visible V-coordinates are from offset.y to offset.y + repeat.y.
-    // To show the top part (V from 1-repeat.y to 1), offset.y must be 1-repeat.y.
-    screenTexture.offset.y = 1 - screenTexture.repeat.y;
+    screenTexture.offset.y = 0;
 
   }, [screenTexture]);
 
@@ -50,14 +51,15 @@ function Model(props: any) {
   useFrame((state, delta) => {
     // Animación de scroll
     const scrollSpeed = 0.02;
+    // The range of offset.y is from 0 (top) to 1 - repeat.y (bottom).
     const scrollRange = 1 - screenTexture.repeat.y;
     
     if (scrollRange > 0) {
-      // Decrease offset to scroll "down" the image (from top to bottom).
-      screenTexture.offset.y -= scrollSpeed * delta;
-      // When we scroll past the bottom (offset < 0), loop back to the top.
-      if (screenTexture.offset.y < 0) {
-        screenTexture.offset.y = scrollRange;
+      // Increase offset to scroll "down" the image (V increases downwards with flipY=true).
+      screenTexture.offset.y += scrollSpeed * delta;
+      // When we scroll past the bottom, loop back to the top.
+      if (screenTexture.offset.y > scrollRange) {
+        screenTexture.offset.y = 0;
       }
     }
 
