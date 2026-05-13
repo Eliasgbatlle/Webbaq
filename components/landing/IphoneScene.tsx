@@ -86,8 +86,8 @@ export function IphoneScene() {
       gl={{ alpha: true }} // Habilitar canal alfa para transparencia
       onCreated={({ gl }) => gl.setClearColor(0x000000, 0)} // Establecer fondo transparente
     >
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[10, 10, 5]} intensity={0.8} />
+      <ambientLight intensity={0} />
+      <directionalLight position={[10, 10, 5]} intensity={0} />
       <Suspense fallback={null}>
         <Model scale={1.2} position={[0, -50, 0]} rotation={[0, -0.2,0]} />
       </Suspense>
