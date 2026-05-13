@@ -13,16 +13,9 @@ function Model(props: any) {
 
   // CONFIGURACIÓN DE TEXTURA
   useEffect(() => {
-    const imageAspect = 390 / 9622;
-    const screenAspect = 1170 / 2532;
-
     texture.colorSpace = THREE.SRGBColorSpace;
-
-    // Igual que Macbook
     texture.flipY = false;
-
-    texture.wrapS = THREE.ClampToEdgeWrapping;
-    texture.wrapT = THREE.ClampToEdgeWrapping;
+    texture.needsUpdate = true;
 
     texture.repeat.set(1, imageAspect / screenAspect);
 
