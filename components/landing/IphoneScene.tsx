@@ -16,15 +16,9 @@ function Model(props: any) {
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = false;
     texture.needsUpdate = true;
-
-    texture.repeat.set(1, imageAspect / screenAspect);
-
-    texture.offset.y = 1 - texture.repeat.y;
-
-    texture.needsUpdate = true;
   }, [texture]);
 
-  // MATERIAL IGUAL A MACBOOK
+  // MATERIAL
   const screenMaterial = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
@@ -34,7 +28,7 @@ function Model(props: any) {
     [texture]
   );
 
-  // ASIGNAR MATERIAL
+  // ASIGNAR MATERIAL A LA PANTALLA
   useEffect(() => {
     scene.traverse((child) => {
       if ((child as THREE.Mesh).isMesh) {
@@ -46,18 +40,7 @@ function Model(props: any) {
   }, [scene, screenMaterial]);
 
   // ANIMACIONES
-  useFrame((state, delta) => {
-    const scrollSpeed = 0.02;
-    const scrollRange = 1 - texture.repeat.y;
-
-    if (scrollRange > 0) {
-      texture.offset.y -= scrollSpeed * delta;
-
-      if (texture.offset.y < 0) {
-        texture.offset.y = scrollRange;
-      }
-    }
-
+  useFrame((state) => {
     if (groupRef.current) {
       groupRef.current.position.y =
         -50 + Math.sin(state.clock.elapsedTime * 0.5) * 5;
