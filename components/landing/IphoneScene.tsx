@@ -37,7 +37,6 @@ function Model(props: any) {
 
     // Animación sutil de flotación
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.1;
       // La posición base es -50, y flota +/- 5 unidades
       groupRef.current.position.y = -50 + Math.sin(state.clock.elapsedTime * 0.5) * 5;
     }

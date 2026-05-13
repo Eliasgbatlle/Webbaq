@@ -53,10 +53,6 @@ export function DevelopersSection() {
         }`}
       >
         <IphoneScene />
-        {/* Fade left edge */}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/60 to-transparent" />
-        {/* Fade top edge */}
-        <div className="absolute inset-0 bg-gradient-to-b from-background via-transparent to-transparent" />
       </div>
 
       {/* All text content sits on top */}
