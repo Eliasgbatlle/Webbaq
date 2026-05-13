@@ -1,72 +1,79 @@
 "use client";
 
 import * as THREE from 'three';
-import React, { Suspense, useEffect, useRef } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 
 function Model(props: any) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/iphone_12_pro.glb');
-  
-  const screenTexture = useTexture('/images/Compuservicios.png');
 
-  // Set up texture properties for correct aspect ratio and scrolling
+  const texture = useTexture('/images/Compuservicios.png');
+
+  // CONFIGURACIÓN DE TEXTURA
   useEffect(() => {
     const imageAspect = 390 / 9622;
-    const screenAspect = 1170 / 2532; // iPhone 12 Pro screen aspect ratio
+    const screenAspect = 1170 / 2532;
 
-    screenTexture.flipY = true; // Flip the texture to display it correctly
-    screenTexture.colorSpace = THREE.SRGBColorSpace; // Ensure correct color display
-    
-    // Use ClampToEdgeWrapping to prevent the texture from repeating at the edges.
-    screenTexture.wrapS = THREE.ClampToEdgeWrapping;
-    screenTexture.wrapT = THREE.ClampToEdgeWrapping;
-    
-    // To prevent distortion, the aspect ratio of the texture part we display
-    // must match the aspect ratio of the screen mesh.
-    // So, repeat.y = imageAspect / screenAspect.
-    screenTexture.repeat.set(1, imageAspect / screenAspect);
+    texture.colorSpace = THREE.SRGBColorSpace;
 
-    // Start the scroll from the top of the image.
-    // The visible V-coordinates are from offset.y to offset.y + repeat.y.
-    // To show the top part (V from 1-repeat.y to 1), offset.y must be 1-repeat.y.
-    screenTexture.offset.y = 1 - screenTexture.repeat.y;
+    // Igual que Macbook
+    texture.flipY = false;
 
-  }, [screenTexture]);
+    texture.wrapS = THREE.ClampToEdgeWrapping;
+    texture.wrapT = THREE.ClampToEdgeWrapping;
 
-  // Create the material for the screen
-  const screenMaterial = new THREE.MeshBasicMaterial({
-    map: screenTexture,
-    toneMapped: false,
-  });
+    texture.repeat.set(1, imageAspect / screenAspect);
 
-  // Asignar el material a la pantalla del modelo
-  scene.traverse((child) => {
-    if ((child as THREE.Mesh).isMesh && child.name === 'Screen_Wallpaper_0') {
-      child.material = screenMaterial;
-    }
-  });
+    texture.offset.y = 1 - texture.repeat.y;
 
-  // Animación de scroll en la textura y flotación del teléfono
+    texture.needsUpdate = true;
+  }, [texture]);
+
+  // MATERIAL IGUAL A MACBOOK
+  const screenMaterial = useMemo(
+    () =>
+      new THREE.MeshBasicMaterial({
+        map: texture,
+        toneMapped: false,
+      }),
+    [texture]
+  );
+
+  // ASIGNAR MATERIAL
+  useEffect(() => {
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        if (child.name === 'Screen_Wallpaper_0') {
+          child.material = screenMaterial;
+        }
+      }
+    });
+  }, [scene, screenMaterial]);
+
+  // ANIMACIONES
   useFrame((state, delta) => {
-    // Animación de scroll
     const scrollSpeed = 0.02;
-    const scrollRange = 1 - screenTexture.repeat.y;
-    
+    const scrollRange = 1 - texture.repeat.y;
+
     if (scrollRange > 0) {
-      // Decrease offset to scroll "down" the image (from top to bottom).
-      screenTexture.offset.y -= scrollSpeed * delta;
-      // When we scroll past the bottom (offset < 0), loop back to the top.
-      if (screenTexture.offset.y < 0) {
-        screenTexture.offset.y = scrollRange;
+      texture.offset.y -= scrollSpeed * delta;
+
+      if (texture.offset.y < 0) {
+        texture.offset.y = scrollRange;
       }
     }
 
-    // Animación sutil de flotación
     if (groupRef.current) {
-      // La posición base es -50, y flota +/- 5 unidades
-      groupRef.current.position.y = -50 + Math.sin(state.clock.elapsedTime * 0.5) * 5;
+      groupRef.current.position.y =
+        -50 + Math.sin(state.clock.elapsedTime * 0.5) * 5;
+
+      groupRef.current.rotation.x =
+        Math.sin(state.clock.elapsedTime * 0.8) * 0.015;
+
+      groupRef.current.rotation.z =
+        Math.cos(state.clock.elapsedTime * 0.5) * 0.01;
     }
   });
 
@@ -79,19 +86,27 @@ function Model(props: any) {
 
 export function IphoneScene() {
   return (
-    <Canvas 
+    <Canvas
       camera={{ position: [0, 0, 150], fov: 70 }}
-      dpr={[1, 2]}
+      dpr={[1, 1.5]}
       style={{ pointerEvents: 'none' }}
-      gl={{ alpha: true }} // Habilitar canal alfa para transparencia
-      onCreated={({ gl }) => gl.setClearColor(0x000000, 0)} // Establecer fondo transparente
+      gl={{ alpha: true, antialias: true }}
+      onCreated={({ gl }) => {
+        gl.setClearColor(0x000000, 0);
+      }}
     >
-      <ambientLight intensity={2} />
-      <directionalLight position={[10, 10, 5]} intensity={3} />
+      <ambientLight intensity={1.5} />
+      <directionalLight position={[5, 5, 5]} intensity={2} />
+
       <Suspense fallback={null}>
-        <Model scale={1.2} position={[0, -50, 0]} rotation={[0, -0.2,0]} />
+        <Model
+          scale={1.2}
+          position={[0, -50, 0]}
+          rotation={[0, -0.2, 0]}
+        />
       </Suspense>
-      <OrbitControls 
+
+      <OrbitControls
         enabled={false}
         enableZoom={false}
         enablePan={false}
@@ -100,6 +115,5 @@ export function IphoneScene() {
   );
 }
 
-// Precargar los assets para una carga más rápida
 useGLTF.preload('/3d/iphone_12_pro.glb');
 useTexture.preload('/images/Compuservicios.png');
