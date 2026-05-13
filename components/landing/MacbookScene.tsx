@@ -4,7 +4,7 @@ import * as THREE from 'three'
 import React, { Suspense, useEffect, useMemo, useRef } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { useGLTF, useVideoTexture, OrbitControls } from '@react-three/drei'
-import { EffectComposer } from '@react-three/postprocessing'
+import { EffectComposer, MotionBlur } from '@react-three/postprocessing'
 import { gsap } from 'gsap'
 
 function Model({ videoPath, ...props }: { videoPath: string, [key: string]: any }) {
@@ -96,6 +96,11 @@ export function MacbookScene() {
       <Suspense fallback={null}>
         <EffectComposer>
           <Model videoPath={videoSrc} position={[0, -10, 0]} scale={1.2} />
+          <MotionBlur
+            intensity={0.3} // Ajusta la intensidad del desenfoque
+            velocityFactor={0.2}
+            delta={0.016}
+          />
         </EffectComposer>
       </Suspense>
       <OrbitControls 
