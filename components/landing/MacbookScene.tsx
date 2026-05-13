@@ -82,7 +82,7 @@ export function MacbookScene() {
       <ambientLight intensity={1.5} />
       <directionalLight position={[5, 5, 5]} intensity={2} />
       <Suspense fallback={null}>
-        <Model videoPath={videoSrc} position={[0, -1.4, 0]} scale={1.2} />
+        <Model videoPath={videoSrc} position={[0, -1, 0]} scale={1.2} />
       </Suspense>
       <OrbitControls 
         enableZoom={false} 
