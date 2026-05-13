@@ -45,7 +45,7 @@ function Model(props: any) {
 export function IphoneScene() {
   return (
     <Canvas 
-      camera={{ position: [0, 0, 15], fov: 30 }}
+      camera={{ position: [0, 0, 50], fov: 50 }}
       dpr={[1, 2]}
       style={{ pointerEvents: 'none' }}
     >
