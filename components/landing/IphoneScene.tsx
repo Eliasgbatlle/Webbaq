@@ -8,7 +8,7 @@ import { useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 function Model(props: any) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/iphone_12_pro.glb');
-  
+  console.log(child);
   const screenTexture = useTexture('/images/Compuservicios.png');
 
   // Set up texture properties for correct aspect ratio and scrolling
@@ -44,7 +44,7 @@ function Model(props: any) {
   // Asignar el material a la pantalla del modelo
   scene.traverse((child) => {
     if ((child as THREE.Mesh).isMesh && child.name === 'Screen_Wallpaper_0') {
-      
+
       child.material = screenMaterial;
     }
   });
