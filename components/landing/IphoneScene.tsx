@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from 'three';
-import React, { Suspense, useRef } from 'react';
+import React, { Suspense, useEffect, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 
@@ -9,12 +9,31 @@ function Model(props: any) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/iphone_12_pro.glb');
   
-  // Cargar la textura de la pantalla con la imagen correcta
   const screenTexture = useTexture('/images/Compuservicios.png');
-  screenTexture.flipY = false; // La textura GLB no necesita ser volteada
-  screenTexture.wrapT = THREE.RepeatWrapping; // Permitir que la textura se repita verticalmente
 
-  // Crear el material para la pantalla
+  // Set up texture properties for correct aspect ratio and scrolling
+  useEffect(() => {
+    const imageAspect = 390 / 9622;
+    const screenAspect = 1170 / 2532; // iPhone 12 Pro screen aspect ratio
+
+    screenTexture.flipY = false;
+    // Use ClampToEdgeWrapping to prevent the texture from repeating at the edges.
+    screenTexture.wrapS = THREE.ClampToEdgeWrapping;
+    screenTexture.wrapT = THREE.ClampToEdgeWrapping;
+    
+    // To prevent distortion, the aspect ratio of the texture part we display
+    // must match the aspect ratio of the screen mesh.
+    // So, repeat.y = imageAspect / screenAspect.
+    screenTexture.repeat.set(1, imageAspect / screenAspect);
+
+    // Start the scroll from the top of the image.
+    // The visible V-coordinates are from offset.y to offset.y + repeat.y.
+    // To show the top part (V from 1-repeat.y to 1), offset.y must be 1-repeat.y.
+    screenTexture.offset.y = 1 - screenTexture.repeat.y;
+
+  }, [screenTexture]);
+
+  // Create the material for the screen
   const screenMaterial = new THREE.MeshBasicMaterial({
     map: screenTexture,
     toneMapped: false,
@@ -30,9 +49,16 @@ function Model(props: any) {
   // Animación de scroll en la textura y flotación del teléfono
   useFrame((state, delta) => {
     // Animación de scroll
-    screenTexture.offset.y -= delta * 0.05;
-    if (screenTexture.offset.y < -1) {
-      screenTexture.offset.y = 0;
+    const scrollSpeed = 0.02;
+    const scrollRange = 1 - screenTexture.repeat.y;
+    
+    if (scrollRange > 0) {
+      // Decrease offset to scroll "down" the image (from top to bottom).
+      screenTexture.offset.y -= scrollSpeed * delta;
+      // When we scroll past the bottom (offset < 0), loop back to the top.
+      if (screenTexture.offset.y < 0) {
+        screenTexture.offset.y = scrollRange;
+      }
     }
 
     // Animación sutil de flotación
