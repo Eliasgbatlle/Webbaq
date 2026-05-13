@@ -90,25 +90,6 @@ export function PricingSection() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header with image */}
         <div className="grid lg:grid-cols-12 gap-8 mb-16 lg:mb-20">
-          <div className="lg:col-span-7">
-            <span className="inline-flex items-center gap-3 text-sm font-mono text-emerald-400 mb-6">
-              <span className="w-12 h-px bg-emerald-500/50" />
-              Nuestros Planes 2026
-            </span>
-            <h2 className={`text-5xl md:text-6xl lg:text-7xl xl:text-[100px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}>
-              Planes que
-              <br />
-              <span className="text-stroke text-muted-foreground">funcionan.</span>
-            </h2>
-            <p className={`text-lg text-muted-foreground max-w-lg mt-8 leading-relaxed transition-all duration-1000 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}>
-              Elige según el nivel de tu negocio. Todos incluyen hosting, SEO local y soporte por WhatsApp sin costo extra.
-            </p>
-          </div>
-          
           {/* IMAGE PLACEHOLDER - CAMBIA ESTA URL POR TU IMAGEN */}
           <div className="lg:col-span-5 relative h-64 lg:h-auto">
             <div className={`absolute inset-0 pointer-events-none transition-all duration-1000 delay-100 ${
@@ -120,6 +101,25 @@ export function PricingSection() {
                 className="w-full h-full object-contain object-center"
               />
             </div>
+          </div>
+
+          <div className="lg:col-span-7 lg:text-right">
+            <span className="inline-flex items-center gap-3 text-sm font-mono text-emerald-400 mb-6">
+              Nuestros Planes 2026
+              <span className="w-12 h-px bg-emerald-500/50" />
+            </span>
+            <h2 className={`text-5xl md:text-6xl lg:text-7xl xl:text-[100px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}>
+              Planes que
+              <br />
+              <span className="text-stroke text-muted-foreground">funcionan.</span>
+            </h2>
+            <p className={`text-lg text-muted-foreground max-w-lg mt-8 leading-relaxed lg:ml-auto transition-all duration-1000 delay-200 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+            }`}>
+              Elige según el nivel de tu negocio. Todos incluyen hosting, SEO local y soporte por WhatsApp sin costo extra.
+            </p>
           </div>
         </div>
 
