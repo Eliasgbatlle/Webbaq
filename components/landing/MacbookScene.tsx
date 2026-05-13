@@ -85,6 +85,7 @@ export function MacbookScene() {
         <Model videoPath={videoSrc} position={[0, -10, 0]} scale={1.2} />
       </Suspense>
       <OrbitControls 
+        enabled={false}
         enableZoom={false} 
         enablePan={false} 
         minPolarAngle={Math.PI / 2.3} 

@@ -13,15 +13,7 @@ const ASCII_CHARS = " .:-=+*#%@";
 export function AsciiScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef(0);
-  const mouseRef = useRef({ x: 0.5, y: 0.5 });
   const timeRef = useRef(0);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    mouseRef.current = {
-      x: e.clientX / window.innerWidth,
-      y: e.clientY / window.innerHeight,
-    };
-  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,8 +21,6 @@ export function AsciiScene() {
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-
-    window.addEventListener("mousemove", handleMouseMove);
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -139,12 +129,10 @@ export function AsciiScene() {
 
       // Fond transparent (section a son propre bg)
       ctx.clearRect(0, 0, width, height);
-      const mouseInfluenceX = (mouseRef.current.x - 0.5) * 0.5;
-      const mouseInfluenceY = (mouseRef.current.y - 0.5) * 0.5;
 
       const time = timeRef.current;
-      const angleX = time * 0.3 + mouseInfluenceY;
-      const angleY = time * 0.5 + mouseInfluenceX;
+      const angleX = time * 0.3;
+      const angleY = time * 0.5;
       const angleZ = time * 0.2;
 
       // Projeter et trier les points par profondeur
@@ -196,10 +184,9 @@ export function AsciiScene() {
 
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(frameRef.current);
     };
-  }, [handleMouseMove]);
+  }, []);
 
   return (
     <canvas
