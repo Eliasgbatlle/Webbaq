@@ -52,7 +52,7 @@ function Model(props: any) {
     if (groupRef.current) {
       // Animación sutil de flotación vertical con menor amplitud
       groupRef.current.position.y =
-        -50 + Math.sin(state.clock.elapsedTime * 0.5) * 2;
+        -70 + Math.sin(state.clock.elapsedTime * 0.5) * 2;
     }
   });
 
