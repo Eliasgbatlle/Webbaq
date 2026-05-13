@@ -53,7 +53,7 @@ export function FeaturesSection() {
       ref={sectionRef}
       className="relative py-24 lg:py-32 overflow-hidden"
     >
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header */}
         <div className="relative mb-16 lg:mb-24">
           <div className="grid lg:grid-cols-12 gap-8 items-end">
@@ -118,9 +118,9 @@ export function FeaturesSection() {
         </div>
       </div>
         {/* Gradient fade to black at top */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent pointer-events-none" />
         {/* Subtle dark vignette on sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 pointer-events-none" />
     </section>
   );
 }
