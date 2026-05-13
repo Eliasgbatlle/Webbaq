@@ -16,6 +16,7 @@ function Model(props: any) {
   useEffect(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = false;
+    texture.wrapT = THREE.RepeatWrapping; // Habilitar repetición de textura para el scroll
     
     // Mejorar la calidad de la textura con filtrado anisotrópico
     const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
@@ -46,7 +47,13 @@ function Model(props: any) {
   }, [scene, screenMaterial]);
 
   // ANIMACIONES
-  useFrame((state) => {
+  useFrame((state, delta) => {
+    // Animación de scroll en la textura
+    texture.offset.y -= delta * 0.05;
+    if (texture.offset.y < -1) {
+      texture.offset.y = 0;
+    }
+
     if (groupRef.current) {
       // Animación sutil de flotación vertical
       groupRef.current.position.y =
@@ -64,7 +71,7 @@ function Model(props: any) {
 export function IphoneScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 110], fov: 70 }}
+      camera={{ position: [0, 0, 150], fov: 70 }}
       dpr={[1, 2]} // Aumentar el device pixel ratio para mayor nitidez
       style={{ pointerEvents: 'none' }}
       gl={{ alpha: true, antialias: true }}
@@ -83,7 +90,7 @@ export function IphoneScene() {
         />
       </Suspense>
 
-      <OrbitControls
+      <OrbitControls 
         enabled={false}
         enableZoom={false}
         enablePan={false}
