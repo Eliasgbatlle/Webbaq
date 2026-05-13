@@ -8,7 +8,7 @@ import { useGLTF, useTexture, OrbitControls } from '@react-three/drei';
 function Model(props: any) {
   const groupRef = useRef<THREE.Group>(null);
   const { scene } = useGLTF('/3d/iphone_12_pro.glb');
-  const { gl } = useThree(); // Obtener el renderer para acceder a sus capacidades
+  const { gl } = useThree();
 
   const texture = useTexture('/images/Compuservicios.png');
 
@@ -16,14 +16,9 @@ function Model(props: any) {
   useEffect(() => {
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.flipY = false;
-    texture.wrapT = THREE.RepeatWrapping; // Habilitar repetición de textura para el scroll
-    
-    // Mejorar la calidad de la textura con filtrado anisotrópico
-    const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
-    texture.anisotropy = maxAnisotropy;
-
+    texture.wrapT = THREE.RepeatWrapping;
     texture.needsUpdate = true;
-  }, [texture, gl]);
+  }, [texture]);
 
   // MATERIAL
   const screenMaterial = useMemo(
@@ -71,8 +66,8 @@ function Model(props: any) {
 export function IphoneScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 100], fov: 70 }} // Posición de cámara ajustada
-      dpr={[1, 2]}
+      camera={{ position: [0, 0, 100], fov: 70 }}
+      dpr={[1, 1.5]} // Optimizado
       style={{ pointerEvents: 'none' }}
       gl={{ alpha: true, antialias: true }}
       onCreated={({ gl }) => {
