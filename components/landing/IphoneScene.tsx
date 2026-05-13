@@ -49,15 +49,15 @@ function Model(props: any) {
   // ANIMACIONES
   useFrame((state, delta) => {
     // Animación de scroll en la textura (contenido se mueve hacia arriba)
-    texture.offset.y += delta * 0.05;
+    texture.offset.y += delta * 0.025; // Velocidad reducida
     if (texture.offset.y > 1) {
       texture.offset.y = 0;
     }
 
     if (groupRef.current) {
-      // Animación sutil de flotación vertical
+      // Animación sutil de flotación vertical con menor amplitud
       groupRef.current.position.y =
-        -50 + Math.sin(state.clock.elapsedTime * 0.5) * 5;
+        -50 + Math.sin(state.clock.elapsedTime * 0.5) * 2;
     }
   });
 
@@ -71,8 +71,8 @@ function Model(props: any) {
 export function IphoneScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 100], fov: 70 }}
-      dpr={[1, 2]} // Aumentar el device pixel ratio para mayor nitidez
+      camera={{ position: [0, 0, 100], fov: 70 }} // Posición de cámara ajustada
+      dpr={[1, 2]}
       style={{ pointerEvents: 'none' }}
       gl={{ alpha: true, antialias: true }}
       onCreated={({ gl }) => {
