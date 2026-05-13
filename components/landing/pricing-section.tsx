@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { ArrowRight, Check, Zap } from "lucide-react";
-import { Logo3DScene } from "./Logo3DScene";
 
 const plans = [
   {
@@ -91,12 +90,16 @@ export function PricingSection() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         {/* Header with image */}
         <div className="grid lg:grid-cols-12 gap-8 mb-16 lg:mb-20">
-          {/* 3D Logo Scene */}
+          {/* IMAGE PLACEHOLDER - CAMBIA ESTA URL POR TU IMAGEN */}
           <div className="lg:col-span-5 relative h-64 lg:h-auto">
             <div className={`absolute inset-0 pointer-events-none transition-all duration-1000 delay-100 ${
               isVisible ? "opacity-100" : "opacity-0"
             }`}>
-              <Logo3DScene />
+              <img
+                src="/images/whale.png"
+                alt="Imagen decorativa planes"
+                className="w-full h-full object-contain object-center"
+              />
             </div>
           </div>
 
