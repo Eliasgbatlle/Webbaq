@@ -47,21 +47,21 @@ export function CtaSection() {
           />
           
           <div className="relative z-10 px-8 lg:px-16 py-16 lg:py-20">
-            <div className="flex flex-col lg:flex-row items-center lg:items-start justify-between gap-12">
-              {/* Left content */}
-              <div className="flex-1 text-center lg:text-left">
+            <div className="flex flex-col items-center justify-center text-center gap-12">
+              {/* Content */}
+              <div className="flex-1">
                 <h2 className="text-4xl md:text-5xl lg:text-6xl font-display tracking-tight mb-6 leading-[1.05]">
                   Empieza a conseguir clientes
                   <br />
                   <span className="text-emerald-400">con tu página web hoy</span>
                 </h2>
 
-                <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl mx-auto">
                   El 80% de los barranquilleros buscan en Google antes de comprar. 
                   Empieza hoy con 1 mes de prueba a precio reducido.
                 </p>
 
-                <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 mb-8">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
                   <Button
                     size="lg"
                     className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 h-14 text-base rounded-full group"
@@ -72,7 +72,7 @@ export function CtaSection() {
                   </Button>
                 </div>
 
-                <div className="flex flex-wrap justify-center lg:justify-start gap-6 text-sm text-muted-foreground">
+                <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
                   <span className="flex items-center gap-2">
                     <Check className="w-4 h-4 text-emerald-400" />
                     1 mes de prueba con precio reducido
@@ -82,15 +82,6 @@ export function CtaSection() {
                     SEO local Barranquilla incluido
                   </span>
                 </div>
-              </div>
-
-              {/* Right side - IMAGE PLACEHOLDER - CAMBIA ESTA URL POR TU IMAGEN */}
-              <div className="flex items-end justify-center w-full max-w-xs mx-auto mt-8 lg:mt-0 lg:w-[500px] lg:h-[500px] lg:max-w-none lg:-mr-12">
-                <img
-                  src="/images/bridge.png"
-                  alt="Conexión con clientes"
-                  className="w-full h-full object-contain object-bottom"
-                />
               </div>
             </div>
           </div>
