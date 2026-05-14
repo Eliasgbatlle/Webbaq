@@ -49,11 +49,12 @@ export function HowItWorksSection() {
   }, []);
 
   useEffect(() => {
+    if (!isVisible) return;
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % steps.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isVisible]);
 
   return (
     <section
@@ -95,7 +96,7 @@ export function HowItWorksSection() {
           <div className={`relative h-[280px] lg:h-[500px] transition-all duration-1000 delay-200 ${
             isVisible ? "opacity-100" : "opacity-0"
           }`}>
-            <IconMorphAnimation />
+            <IconMorphAnimation activeIndex={activeStep} />
           </div>
         </div>
 

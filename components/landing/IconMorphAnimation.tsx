@@ -10,17 +10,7 @@ const icons = [
   { component: Rocket, color: 'text-emerald-400' },
 ];
 
-export function IconMorphAnimation() {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % icons.length);
-    }, 2500); // Cambia el ícono cada 2.5 segundos
-
-    return () => clearInterval(interval);
-  }, []);
-
+export function IconMorphAnimation({ activeIndex }: { activeIndex: number }) {
   return (
     <div className="relative w-full h-full flex items-center justify-center">
       {icons.map((Icon, index) => (
