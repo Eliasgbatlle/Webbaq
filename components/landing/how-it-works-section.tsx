@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ClipboardList, Send, Palette, Rocket } from "lucide-react";
+import { IconMorphAnimation } from "./IconMorphAnimation";
 
 const steps = [
   {
@@ -90,17 +91,11 @@ export function HowItWorksSection() {
             </p>
           </div>
 
-          {/* Right column - IMAGE PLACEHOLDER - CAMBIA ESTA URL POR TU IMAGEN */}
-          <div className={`relative h-[280px] lg:h-[500px] overflow-hidden transition-all duration-1000 delay-200 ${
+          {/* Right column - Icon Animation */}
+          <div className={`relative h-[280px] lg:h-[500px] transition-all duration-1000 delay-200 ${
             isVisible ? "opacity-100" : "opacity-0"
           }`}>
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/tree-uAia6REvB137CQyHFCf0za3O6h2zKO.png"
-              alt="Proceso de creación web"
-              className="absolute bottom-0 left-0 w-full h-full object-contain object-bottom"
-            />
-            {/* Fade on left edge */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[oklch(0.09_0.01_260)] via-transparent to-transparent pointer-events-none" />
+            <IconMorphAnimation />
           </div>
         </div>
 
