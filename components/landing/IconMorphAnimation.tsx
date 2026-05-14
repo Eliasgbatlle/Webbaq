@@ -1,13 +1,16 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { ClipboardList, Send, Palette, Rocket } from 'lucide-react';
+import { ClipboardIcon } from './icons/ClipboardIcon';
+import { SendIcon } from './icons/SendIcon';
+import { PaletteIcon } from './icons/PaletteIcon';
+import { RocketIcon } from './icons/RocketIcon';
 
 const icons = [
-  { component: ClipboardList, color: 'text-emerald-400' },
-  { component: Send, color: 'text-emerald-400' },
-  { component: Palette, color: 'text-emerald-400' },
-  { component: Rocket, color: 'text-emerald-400' },
+  ClipboardIcon,
+  SendIcon,
+  PaletteIcon,
+  RocketIcon,
 ];
 
 export function IconMorphAnimation() {
@@ -33,9 +36,8 @@ export function IconMorphAnimation() {
             filter: `blur(${activeIndex === index ? 0 : '10px'})`,
           }}
         >
-          <Icon.component
-            className={`${Icon.color} w-48 h-48 lg:w-64 lg:h-64`}
-            strokeWidth={0.5}
+          <Icon
+            className="w-48 h-48 lg:w-64 lg:h-64"
           />
         </div>
       ))}
