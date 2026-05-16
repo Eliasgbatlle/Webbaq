@@ -44,7 +44,7 @@ export function DevelopersSection() {
   }, []);
 
   return (
-    <section id="developers" ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="developers" ref={sectionRef} className="relative py-24 lg:flex lg:items-center lg:min-h-screen overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Text content */}
@@ -85,7 +85,7 @@ export function DevelopersSection() {
           </div>
           
           {/* iPhone Scene */}
-          <div className={`relative h-[500px] md:h-[600px] lg:h-auto lg:aspect-[9/10] -mt-12 lg:mt-0 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
+          <div className={`relative h-[70vh] lg:h-[80vh] -mt-12 lg:mt-0 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
             <IphoneScene />
           </div>
         </div>

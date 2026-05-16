@@ -93,7 +93,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative h-screen flex flex-col justify-center overflow-hidden bg-black">
+    <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black py-16">
       {/* Background 3D model */}
       <div className="absolute inset-0 z-0">
         {isHeroVisible && <AsciiScene />}
@@ -126,7 +126,7 @@ export function HeroSection() {
         ))}
       </div>
       
-      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12 pt-24">
+      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left content */}
           <div className="pointer-events-auto">
