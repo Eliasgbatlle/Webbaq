@@ -68,7 +68,7 @@ export function HowItWorksSection() {
         {/* Header with image */}
         <div className="relative mb-16 lg:mb-0 grid lg:grid-cols-2 gap-8 lg:gap-12 items-end">
           {/* Left column - Title */}
-          <div className="overflow-hidden pb-0 lg:pb-24">
+          <div className="overflow-hidden pb-0 lg:pb-24 text-center lg:text-left">
             <span className={`inline-flex items-center gap-3 text-sm font-mono text-emerald-400 mb-6 transition-all duration-1000 ${
               isVisible ? "translate-x-0 opacity-100" : "-translate-x-12 opacity-0"
             }`}>
@@ -85,7 +85,7 @@ export function HowItWorksSection() {
               <span className="block text-foreground/30">Envía.</span>
               <span className="block text-foreground/10">¡Listo!</span>
             </h2>
-            <p className={`text-lg text-muted-foreground max-w-md mt-8 leading-relaxed transition-all duration-1000 delay-200 ${
+            <p className={`text-lg text-muted-foreground max-w-md mt-8 leading-relaxed transition-all duration-1000 delay-200 mx-auto lg:mx-0 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
             }`}>
               Proceso simple y rápido. En menos de una semana tu negocio ya aparece en Google en Barranquilla.

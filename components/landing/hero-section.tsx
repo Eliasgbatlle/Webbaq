@@ -104,7 +104,7 @@ export function HeroSection() {
       </div>
 
       {/* Macbook Scene - Fullscreen absolute */}
-      <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
+      <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 hidden lg:block ${isVisible ? "opacity-100" : "opacity-0"}`}>
         {isHeroVisible && <MacbookScene />}
       </div>
 
@@ -126,8 +126,8 @@ export function HeroSection() {
         ))}
       </div>
       
-      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12 pt-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left content */}
           <div className="pointer-events-auto">
             {/* Location badge */}
