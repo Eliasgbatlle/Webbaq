@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
-import { MacbookScene } from "./MacbookScene";
+
 import { AsciiScene } from "./ascii-scene";
 
 const words = ["restaurantes", "tiendas", "salones", "gimnasios"];
@@ -16,7 +16,7 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
 
   useEffect(() => {
     setLetterStates(letters.map(() => ({ opacity: 0, blur: 20 })));
-    
+
     letters.forEach((_, i) => {
       setTimeout(() => {
         const start = performance.now();
@@ -33,7 +33,7 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
         requestAnimationFrame(animate);
       }, i * 45);
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger]);
 
   return (
@@ -105,7 +105,7 @@ export function HeroSection() {
 
       {/* Macbook Scene - Fullscreen absolute */}
       <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 hidden lg:block ${isVisible ? "opacity-100" : "opacity-0"}`}>
-        {isHeroVisible && <MacbookScene />}
+
       </div>
 
       {/* Subtle grid lines */}
@@ -125,29 +125,27 @@ export function HeroSection() {
           />
         ))}
       </div>
-      
+
       <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left content */}
           <div className="pointer-events-auto">
             {/* Location badge */}
-            <div 
-              className={`mb-8 transition-all duration-700 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
+            <div
+              className={`mb-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
             >
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-sm text-emerald-400">
                 <MapPin className="w-4 h-4" />
                 Barranquilla, Colombia - Desde $60.000/mes
               </span>
             </div>
-            
+
             {/* Main headline */}
             <div className="mb-8">
-              <h1 
-                className={`text-left text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display leading-[1.05] tracking-tight text-white transition-all duration-1000 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
+              <h1
+                className={`text-left text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display leading-[1.05] tracking-tight text-white transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  }`}
               >
                 <span className="block">Diseño web y SEO local</span>
                 <span className="block">
@@ -161,19 +159,17 @@ export function HeroSection() {
             </div>
 
             {/* Subtitle */}
-            <p 
-              className={`text-lg lg:text-xl text-white/60 mb-10 max-w-lg leading-relaxed transition-all duration-1000 delay-200 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
+            <p
+              className={`text-lg lg:text-xl text-white/60 mb-10 max-w-lg leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
             >
               Diseñamos tu web, la posicionamos en Google y te ayudamos a conseguir clientes.
             </p>
 
             {/* CTAs */}
-            <div 
-              className={`flex flex-col sm:flex-row gap-4 mb-10 transition-all duration-1000 delay-300 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
+            <div
+              className={`flex flex-col sm:flex-row gap-4 mb-10 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
             >
               <Button
                 size="lg"
@@ -192,10 +188,9 @@ export function HeroSection() {
             </div>
 
             {/* Trust badges */}
-            <div 
-              className={`flex flex-wrap gap-6 text-sm text-white/50 transition-all duration-1000 delay-400 ${
-                isVisible ? "opacity-100" : "opacity-0"
-              }`}
+            <div
+              className={`flex flex-wrap gap-6 text-sm text-white/50 transition-all duration-1000 delay-400 ${isVisible ? "opacity-100" : "opacity-0"
+                }`}
             >
               <span className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-emerald-400" />
@@ -212,10 +207,9 @@ export function HeroSection() {
             </div>
 
             {/* Stats bar */}
-            <div 
-              className={`transition-all duration-700 delay-500 ${
-                isVisible ? "opacity-100" : "opacity-0"
-              }`}
+            <div
+              className={`transition-all duration-700 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
+                }`}
             >
               <div className="max-w-[1400px] mx-auto px-0 lg:px-0 py-6">
                 <div className="flex flex-wrap items-center justify-left lg:justify-start gap-5 lg:gap-10">

@@ -2,27 +2,27 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Smartphone, Globe, TrendingUp, HeadphonesIcon } from "lucide-react";
-import { IphoneScene } from "./IphoneScene";
+
 
 const features = [
-  { 
+  {
     icon: Smartphone,
-    title: "Diseño Responsive", 
+    title: "Diseño Responsive",
     description: "Tu web se ve perfecta en celular, tablet y computador."
   },
-  { 
+  {
     icon: Globe,
-    title: "SEO Local Optimizado", 
+    title: "SEO Local Optimizado",
     description: "Aparece en Google cuando busquen negocios en Barranquilla."
   },
-  { 
+  {
     icon: TrendingUp,
-    title: "Resultados Reales", 
+    title: "Resultados Reales",
     description: "Más visitas, más llamadas, más clientes para tu negocio."
   },
-  { 
+  {
     icon: HeadphonesIcon,
-    title: "Soporte Directo", 
+    title: "Soporte Directo",
     description: "Te atendemos por WhatsApp cuando lo necesites."
   },
 ];
@@ -59,7 +59,7 @@ export function DevelopersSection() {
               <span className="text-muted-foreground">Resultados reales.</span>
             </h2>
             <p className="text-xl text-muted-foreground mb-12 leading-relaxed max-w-md">
-              No solo hacemos páginas bonitas. Creamos herramientas de venta que 
+              No solo hacemos páginas bonitas. Creamos herramientas de venta que
               funcionan 24/7 para que tu negocio crezca en Barranquilla.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -68,9 +68,8 @@ export function DevelopersSection() {
                 return (
                   <div
                     key={feature.title}
-                    className={`transition-all duration-500 ${
-                      isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                    }`}
+                    className={`transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                      }`}
                     style={{ transitionDelay: `${index * 50 + 200}ms` }}
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -83,10 +82,10 @@ export function DevelopersSection() {
               })}
             </div>
           </div>
-          
+
           {/* iPhone Scene */}
           <div className={`relative h-[70vh] lg:h-[80vh] -mt-12 lg:mt-0 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
-            <IphoneScene />
+            {/* IphoneScene removed */}
           </div>
         </div>
       </div>

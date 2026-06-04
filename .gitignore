@@ -15,3 +15,5 @@ node_modules
 .next/
 .DS_Store
 .dyad/
+.continue/
+.dyad/\n# Production assets not needed in production\npublic/3d/
