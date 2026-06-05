@@ -19,3 +19,7 @@ export const metadata: Metadata = {
     canonical: `${siteUrl}/contacto`,
   },
 }
+
+export default function Page() {
+  return <ContactPage />
+}

@@ -125,7 +125,7 @@ export function HeroSection() {
         ))}
       </div>
 
-      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12">
+      <div className="relative mt-4 z-20 w-full max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* Left content */}
           <div className="pointer-events-auto">
@@ -136,7 +136,7 @@ export function HeroSection() {
             >
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-sm text-emerald-400">
                 <MapPin className="w-4 h-4" />
-                Barranquilla, Colombia - Desde $60.000/mes
+                Barranquilla, Colombia - Desde $90.000/mes
               </span>
             </div>
 
@@ -205,7 +205,7 @@ export function HeroSection() {
               </span>
               <span className="flex items-center gap-2">
                 <CreditCard className="w-4 h-4 text-emerald-400" />
-                Desde $60.000/mes
+                Desde $90.000/mes
               </span>
             </div>
 

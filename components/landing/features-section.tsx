@@ -63,9 +63,8 @@ export function FeaturesSection() {
                 ¿Por qué WebBAQ?
               </span>
               <h2
-                className={`text-4xl md:text-5xl lg:text-6xl font-display tracking-tight leading-[1.05] transition-all duration-1000 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
+                className={`text-4xl md:text-5xl lg:text-6xl font-display tracking-tight leading-[1.05] transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                  }`}
               >
                 La agencia web
                 <br />
@@ -73,14 +72,13 @@ export function FeaturesSection() {
               </h2>
             </div>
             <div className="lg:col-span-5 lg:pb-4">
-              <p className={`text-xl text-muted-foreground leading-relaxed transition-all duration-1000 delay-200 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}>
+              <p className={`text-xl text-muted-foreground leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}>
                 Somos locales. Sabemos lo que funciona en Colombia y lo que no.
               </p>
             </div>
           </div>
-          
+
         </div>
 
         {/* Features Grid */}
@@ -88,11 +86,10 @@ export function FeaturesSection() {
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div 
+              <div
                 key={feature.title}
-                className={`group relative p-8 lg:p-10 border border-foreground/10 bg-emerald-500/5 backdrop-blur-lg rounded-2xl hover:border-emerald-500/30 transition-all duration-500 ${
-                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-                } ${index === 4 ? "md:col-span-2 lg:col-span-1" : ""}`}
+                className={`group relative p-8 lg:p-10 border border-foreground/10 bg-emerald-500/5 backdrop-blur-lg rounded-2xl hover:border-emerald-500/30 transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                  } ${index === 4 ? "md:col-span-2 lg:col-span-1" : ""}`}
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 {/* Icon */}
@@ -117,10 +114,6 @@ export function FeaturesSection() {
           })}
         </div>
       </div>
-        {/* Gradient fade to black at top */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent pointer-events-none" />
-        {/* Subtle dark vignette on sides */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 pointer-events-none" />
     </section>
   );
 }
