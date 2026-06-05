@@ -1,14 +1,16 @@
 import React from "react"
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
+
 export function JsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: "WebBAQ",
-    url: "https://webbaq.com",
+    url: siteUrl,
     description:
       "Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido.",
-    image: "https://webbaq.com/placeholder.jpg",
+    image: `${siteUrl}/placeholder.jpg`,
     telephone: "",
     email: "",
     address: {

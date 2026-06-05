@@ -24,20 +24,26 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--font-jetbrains'
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $60.000/mes',
   description: 'Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido. Barranquilla y toda Colombia. Lista en 3-7 días.',
   keywords: ['diseño web barranquilla', 'páginas web barranquilla', 'seo local barranquilla', 'tienda online barranquilla', 'ecommerce colombia'],
+  alternates: {
+    canonical: siteUrl,
+  },
   openGraph: {
     title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $60.000/mes',
     description: 'Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido. Barranquilla y toda Colombia. Lista en 3-7 días.',
-    url: 'https://webbaq.com',
+    url: siteUrl,
     siteName: 'WebBAQ',
     locale: 'es_CO',
     type: 'website',
     images: [
       {
-        url: 'https://webbaq.com/placeholder.jpg',
+        url: `${siteUrl}/placeholder.jpg`,
         width: 1200,
         height: 630,
         alt: 'WebBAQ - Diseño Web y SEO en Barranquilla',
@@ -48,25 +54,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $60.000/mes',
     description: 'Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido. Barranquilla y toda Colombia.',
-    images: ['https://webbaq.com/placeholder.jpg'],
+    images: [`${siteUrl}/placeholder.jpg`],
   },
-}
-
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
-  return (
-    <html lang="es">
-      <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background`}>
-        <JsonLd />
-        <BackgroundVideo />
-        <Navigation />
-        {children}
-        <FooterSection />
-        <Analytics />
-      </body>
-    </html>
-  )
 }

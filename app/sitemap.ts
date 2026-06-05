@@ -1,7 +1,8 @@
 import { MetadataRoute } from "next";
 
-// Si tienes servicios definidos en alguna parte, impórtalos
-// Por ahora usaremos servicios de ejemplo. Ajusta según tu fuente de datos real.
+const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
+
+// Servicios estáticos para el sitemap
 const servicios = [
   { slug: "diseno-web" },
   { slug: "desarrollo-web" },
@@ -12,9 +13,6 @@ const servicios = [
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://webaq.es";
-
-  // Páginas estáticas principales
   const staticPages = [
     {
       url: baseUrl,
@@ -30,7 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Páginas dinámicas de servicios
   const servicePages = servicios.map((servicio) => ({
     url: `${baseUrl}/servicios/${servicio.slug}`,
     lastModified: new Date(),
@@ -40,3 +37,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticPages, ...servicePages];
 }
+

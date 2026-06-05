@@ -10,6 +10,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
+
 function ServiceSchema({ service }: Readonly<{ service: Service }>) {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -19,7 +21,7 @@ function ServiceSchema({ service }: Readonly<{ service: Service }>) {
     provider: {
       "@type": "LocalBusiness",
       name: "WebBAQ",
-      url: "https://webbaq.com",
+      url: siteUrl,
       address: {
         "@type": "PostalAddress",
         addressLocality: "Barranquilla",
@@ -54,18 +56,18 @@ function BreadcrumbSchema({ service }: Readonly<{ service: Service }>) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Inicio", item: "https://webbaq.com" },
+      { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl },
       {
         "@type": "ListItem",
         position: 2,
         name: "Servicios",
-        item: "https://webbaq.com/#services",
+        item: `${siteUrl}/#services`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: service.title,
-        item: `https://webbaq.com/servicios/${service.slug}`,
+        item: `${siteUrl}/servicios/${service.slug}`,
       },
     ],
   }
@@ -80,7 +82,7 @@ function BreadcrumbSchema({ service }: Readonly<{ service: Service }>) {
 export function generateServiceMetadata(service: Service) {
   const baseTitle = service.title
   const baseDescription = service.description
-  const url = `https://webbaq.com/servicios/${service.slug}`
+  const url = `${siteUrl}/servicios/${service.slug}`
   return {
     title: baseTitle,
     description: baseDescription,
@@ -101,9 +103,9 @@ export function generateServiceMetadata(service: Service) {
       siteName: "WebBAQ",
       locale: "es_CO",
       type: "website",
-      images: [{ url: "https://webbaq.com/placeholder.jpg", width: 1200, height: 630, alt: `${service.title} - WebBAQ` }],
+      images: [{ url: `${siteUrl}/placeholder.jpg`, width: 1200, height: 630, alt: `${service.title} - WebBAQ` }],
     },
-    twitter: { card: "summary_large_image" as const, title: baseTitle, description: baseDescription, images: ["https://webbaq.com/placeholder.jpg"] },
+    twitter: { card: "summary_large_image" as const, title: baseTitle, description: baseDescription, images: [`${siteUrl}/placeholder.jpg`] },
     alternates: { canonical: url },
   }
 }
