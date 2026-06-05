@@ -8,12 +8,11 @@ const plans = [
     name: "Presencia",
     description: "Para negocios que necesitan estar en Google. Una página, bien hecha.",
     options: [
-      { name: "Sin dominio personalizado", price: 60000, subdominio: true },
-      { name: "Con dominio personalizado", price: 80000, subdominio: false },
+      { name: "Con dominio personalizado", price: 90000, subdominio: false },
     ],
     features: [
       "Página web profesional",
-      "SEO local Barranquilla incluido",
+      "SEO local básico incluido",
       "Hosting incluido",
       "Certificado SSL",
       "Soporte por WhatsApp",
@@ -25,7 +24,6 @@ const plans = [
     name: "Profesional",
     description: "Muestra tus productos, recibe pedidos por WhatsApp y aparece en Google.",
     options: [
-      { name: "Sin dominio personalizado", price: 100000, subdominio: true },
       { name: "Con dominio personalizado", price: 130000, subdominio: false },
       { name: "Con gestión de contenido", price: 200000, subdominio: false, gestion: true },
     ],
@@ -43,7 +41,6 @@ const plans = [
     name: "Negocio Digital",
     description: "Cobras con PSE, Nequi y tarjeta. Ventas automáticas sin tu intervención.",
     options: [
-      { name: "Sin dominio personalizado", price: 220000, subdominio: true },
       { name: "Con dominio personalizado", price: 270000, subdominio: false },
       { name: "Con gestión de contenido", price: 300000, subdominio: false, gestion: true },
     ],
@@ -93,18 +90,16 @@ export function PricingSection() {
           <div className="lg:text-left">
             <span className="inline-flex items-center gap-3 text-sm font-mono text-emerald-400 mb-6">
               <span className="w-12 h-px bg-emerald-500/50" />
-              Nuestros Planes 2026
+              {" Nuestros Planes 2026 "}
             </span>
-            <h2 className={`text-5xl md:text-6xl lg:text-7xl xl:text-[100px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}>
+            <h2 className={`text-5xl md:text-6xl lg:text-7xl xl:text-[100px] font-display tracking-tight leading-[0.9] transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}>
               Planes que
               <br />
               <span className="text-stroke text-muted-foreground">funcionan.</span>
             </h2>
-            <p className={`text-lg text-muted-foreground max-w-lg mt-8 leading-relaxed transition-all duration-1000 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}>
+            <p className={`text-lg text-muted-foreground max-w-lg mt-8 leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              }`}>
               Elige según el nivel de tu negocio. Todos incluyen hosting, SEO local y soporte por WhatsApp sin costo extra.
             </p>
           </div>
@@ -115,15 +110,14 @@ export function PricingSection() {
           {plans.map((plan, planIndex) => {
             const selectedOption = selectedOptions[planIndex];
             const currentOption = plan.options[selectedOption];
-            
+
             return (
               <div
                 key={plan.name}
-                className={`relative bg-card border transition-all duration-700 ${
-                  plan.highlight 
-                    ? "border-emerald-500 lg:scale-105 lg:z-10" 
-                    : "border-foreground/10"
-                } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+                className={`relative bg-card border transition-all duration-700 ${plan.highlight
+                  ? "border-emerald-500 lg:scale-105 lg:z-10"
+                  : "border-foreground/10"
+                  } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
                 style={{ transitionDelay: `${planIndex * 100}ms` }}
               >
                 {/* Popular badge */}
@@ -166,11 +160,10 @@ export function PricingSection() {
                           newOptions[planIndex] = optIndex;
                           setSelectedOptions(newOptions);
                         }}
-                        className={`w-full p-3 text-left text-sm border rounded transition-all ${
-                          selectedOption === optIndex
-                            ? "border-emerald-500 bg-emerald-500/10 text-foreground"
-                            : "border-foreground/10 text-muted-foreground hover:border-foreground/30"
-                        }`}
+                        className={`w-full p-3 text-left text-sm border rounded transition-all ${selectedOption === optIndex
+                          ? "border-emerald-500 bg-emerald-500/10 text-foreground"
+                          : "border-foreground/10 text-muted-foreground hover:border-foreground/30"
+                          }`}
                       >
                         <div className="flex items-center justify-between">
                           <span>{option.name}</span>
@@ -188,15 +181,22 @@ export function PricingSection() {
                         <span className="text-sm text-muted-foreground">{feature}</span>
                       </li>
                     ))}
+                    {currentOption.gestion && (
+                      <li className="flex items-start gap-3">
+                        <Check className="w-4 h-4 text-emerald-400 mt-0.5 shrink-0" />
+                        <span className="text-sm text-muted-foreground">
+                          <strong>Gestión de contenido:</strong> Nosotros subimos productos, fotos y contenido de tu empresa por ti
+                        </span>
+                      </li>
+                    )}
                   </ul>
 
                   {/* CTA */}
                   <button
-                    className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group ${
-                      plan.highlight
-                        ? "bg-emerald-500 text-white hover:bg-emerald-600"
-                        : "border border-foreground/20 text-foreground hover:border-emerald-500 hover:text-emerald-400"
-                    }`}
+                    className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group ${plan.highlight
+                      ? "bg-emerald-500 text-white hover:bg-emerald-600"
+                      : "border border-foreground/20 text-foreground hover:border-emerald-500 hover:text-emerald-400"
+                      }`}
                   >
                     Quiero este plan
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -208,9 +208,8 @@ export function PricingSection() {
         </div>
 
         {/* Bottom note */}
-        <div className={`mt-12 flex flex-col lg:flex-row lg:items-center lg:justify-center gap-6 text-center transition-all duration-1000 delay-500 ${
-          isVisible ? "opacity-100" : "opacity-0"
-        }`}>
+        <div className={`mt-12 flex flex-col lg:flex-row lg:items-center lg:justify-center gap-6 text-center transition-all duration-1000 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
+          }`}>
           <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
             <span className="flex items-center gap-2">
               <Check className="w-4 h-4 text-emerald-400" />

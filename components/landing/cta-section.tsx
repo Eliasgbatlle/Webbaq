@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Check, MessageCircle } from "lucide-react";
 
@@ -33,19 +34,18 @@ export function CtaSection() {
     <section ref={sectionRef} className="relative py-24 lg:py-32 overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div
-          className={`relative border border-emerald-500/30 bg-gradient-to-br from-emerald-500/5 to-transparent transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-          onMouseMove={handleMouseMove}
+          className={`relative border border-emerald-500/30 bg-gradient-to-br from-emerald-500/5 to-transparent transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           {/* Spotlight effect */}
-          <div 
+          <div
             className="absolute inset-0 opacity-20 pointer-events-none transition-opacity duration-300"
+            onMouseMove={handleMouseMove}
             style={{
               background: `radial-gradient(600px circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(16, 185, 129, 0.2), transparent 40%)`
             }}
           />
-          
+
           <div className="relative z-10 px-8 lg:px-16 py-16 lg:py-20">
             <div className="flex flex-col items-center justify-center text-center gap-12">
               {/* Content */}
@@ -57,19 +57,21 @@ export function CtaSection() {
                 </h2>
 
                 <p className="text-xl text-muted-foreground mb-8 leading-relaxed max-w-xl mx-auto">
-                  El 80% de los barranquilleros buscan en Google antes de comprar. 
+                  El 80% de los barranquilleros buscan en Google antes de comprar.
                   Empieza hoy con 1 mes de prueba a precio reducido.
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-                  <Button
-                    size="lg"
-                    className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 h-14 text-base rounded-full group"
-                  >
-                    <MessageCircle className="w-5 h-5 mr-2" />
-                    Quiero mi página web ahora
-                    <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-                  </Button>
+                  <Link href="/contacto">
+                    <Button
+                      size="lg"
+                      className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 h-14 text-base rounded-full group"
+                    >
+                      <MessageCircle className="w-5 h-5 mr-2" />
+                      Quiero mi página web ahora
+                      <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                    </Button>
+                  </Link>
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">

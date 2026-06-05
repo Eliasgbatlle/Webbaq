@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
 
@@ -8,7 +9,7 @@ import { AsciiScene } from "./ascii-scene";
 
 const words = ["restaurantes", "tiendas", "salones", "gimnasios"];
 
-function BlurWord({ word, trigger }: { word: string; trigger: number }) {
+function BlurWord({ word, trigger }: Readonly<{ word: string; trigger: number }>) {
   const letters = word.split("");
   const [letterStates, setLetterStates] = useState<{ opacity: number; blur: number }[]>(
     letters.map(() => ({ opacity: 0, blur: 20 }))
@@ -17,21 +18,19 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
   useEffect(() => {
     setLetterStates(letters.map(() => ({ opacity: 0, blur: 20 })));
 
+    function tickLetter(index: number, startTime: number, now: number) {
+      const progress = Math.min((now - startTime) / 500, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setLetterStates(prev => {
+        const next = [...prev];
+        next[index] = { opacity: eased, blur: 20 * (1 - eased) };
+        return next;
+      });
+      if (progress < 1) requestAnimationFrame((t) => tickLetter(index, startTime, t));
+    }
+
     letters.forEach((_, i) => {
-      setTimeout(() => {
-        const start = performance.now();
-        const animate = (now: number) => {
-          const progress = Math.min((now - start) / 500, 1);
-          const eased = 1 - Math.pow(1 - progress, 3);
-          setLetterStates(prev => {
-            const next = [...prev];
-            next[i] = { opacity: eased, blur: 20 * (1 - eased) };
-            return next;
-          });
-          if (progress < 1) requestAnimationFrame(animate);
-        };
-        requestAnimationFrame(animate);
-      }, i * 45);
+      setTimeout(() => requestAnimationFrame((t) => tickLetter(i, t, t)), i * 45);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger]);
@@ -40,7 +39,7 @@ function BlurWord({ word, trigger }: { word: string; trigger: number }) {
     <>
       {letters.map((char, i) => (
         <span
-          key={i}
+          key={`${char}-${i}`}
           style={{
             display: "inline-block",
             opacity: letterStates[i]?.opacity ?? 0,
@@ -110,16 +109,16 @@ export function HeroSection() {
 
       {/* Subtle grid lines */}
       <div className="absolute inset-0 z-[2] overflow-hidden pointer-events-none opacity-10">
-        {[...Array(8)].map((_, i) => (
+        {new Array(8).fill(null).map((_, i) => (
           <div
-            key={`h-${i}`}
+            key={`hline-${12.5 * (i + 1)}`}
             className="absolute h-px bg-white/10"
             style={{ top: `${12.5 * (i + 1)}%`, left: 0, right: 0 }}
           />
         ))}
-        {[...Array(12)].map((_, i) => (
+        {new Array(12).fill(null).map((_, i) => (
           <div
-            key={`v-${i}`}
+            key={`vline-${8.33 * (i + 1)}`}
             className="absolute w-px bg-white/10"
             style={{ left: `${8.33 * (i + 1)}%`, top: 0, bottom: 0 }}
           />
@@ -171,20 +170,24 @@ export function HeroSection() {
               className={`flex flex-col sm:flex-row gap-4 mb-10 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
             >
-              <Button
-                size="lg"
-                className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 h-14 text-base rounded-full group"
-              >
-                Quiero clientes con mi web
-                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="h-14 px-8 text-base rounded-full border-white/20 text-white hover:bg-white/10"
-              >
-                Ver precios y planes
-              </Button>
+              <Link href="/contacto">
+                <Button
+                  size="lg"
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white px-8 h-14 text-base rounded-full group"
+                >
+                  Quiero clientes con mi web
+                  <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </Link>
+              <Link href="/#pricing">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="h-14 px-8 text-base rounded-full border-white/20 text-white hover:bg-white/10"
+                >
+                  Ver precios y planes
+                </Button>
+              </Link>
             </div>
 
             {/* Trust badges */}

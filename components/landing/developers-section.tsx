@@ -1,8 +1,8 @@
+// components/landing/developers-section.tsx
 "use client";
 
 import { useState, useEffect, useRef } from "react";
 import { Smartphone, Globe, TrendingUp, HeadphonesIcon } from "lucide-react";
-
 
 const features = [
   {
@@ -46,7 +46,7 @@ export function DevelopersSection() {
   return (
     <section id="developers" ref={sectionRef} className="relative py-24 lg:flex lg:items-center lg:min-h-screen overflow-hidden">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="grid grid-cols-1 gap-12 lg:gap-8 items-center">
           {/* Text content */}
           <div className={`transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <span className="inline-flex items-center gap-3 text-sm font-mono text-emerald-400 mb-6">
@@ -68,8 +68,7 @@ export function DevelopersSection() {
                 return (
                   <div
                     key={feature.title}
-                    className={`transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                      }`}
+                    className={`transition-all duration-500 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
                     style={{ transitionDelay: `${index * 50 + 200}ms` }}
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -83,10 +82,7 @@ export function DevelopersSection() {
             </div>
           </div>
 
-          {/* iPhone Scene */}
-          <div className={`relative h-[70vh] lg:h-[80vh] -mt-12 lg:mt-0 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100" : "opacity-0"}`}>
-            {/* IphoneScene removed */}
-          </div>
+          {/* Se eliminó la columna del Iphone Scene para que quede una sola columna */}
         </div>
       </div>
     </section>

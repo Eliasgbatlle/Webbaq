@@ -1,5 +1,5 @@
-import { Navigation } from "@/components/landing/navigation";
 import { HeroSection } from "@/components/landing/hero-section";
+import { ServicesSection } from "@/components/landing/services-section";
 import { FeaturesSection } from "@/components/landing/features-section";
 import { SectorsSection } from "@/components/landing/sectors-section";
 import { DevelopersSection } from "@/components/landing/developers-section";
@@ -9,13 +9,11 @@ import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { CoverageSection } from "@/components/landing/coverage-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { CtaSection } from "@/components/landing/cta-section";
-import { FooterSection } from "@/components/landing/footer-section";
-
 export default function Home() {
   return (
     <main className="relative min-h-screen overflow-x-hidden">
-      <Navigation />
       <HeroSection />
+      <ServicesSection />
       <FeaturesSection />
       <SectorsSection />
       <DevelopersSection />
@@ -25,7 +23,7 @@ export default function Home() {
       <CoverageSection />
       <FaqSection />
       <CtaSection />
-      <FooterSection />
     </main>
   );
 }
+
