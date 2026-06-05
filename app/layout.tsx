@@ -28,14 +28,14 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $60.000/mes',
+  title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $90.000/mes',
   description: 'Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido. Barranquilla y toda Colombia. Lista en 3-7 días.',
   keywords: ['diseño web barranquilla', 'páginas web barranquilla', 'seo local barranquilla', 'tienda online barranquilla', 'ecommerce colombia'],
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
-    title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $60.000/mes',
+    title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $90.000/mes',
     description: 'Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido. Barranquilla y toda Colombia. Lista en 3-7 días.',
     url: siteUrl,
     siteName: 'WebBAQ',
@@ -52,8 +52,27 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $60.000/mes',
+    title: 'WebBAQ - Diseño Web y SEO en Barranquilla desde $90.000/mes',
     description: 'Diseñamos tu página web profesional y la posicionamos en Google. Tiendas online, SEO local, hosting incluido. Barranquilla y toda Colombia.',
     images: [`${siteUrl}/placeholder.jpg`],
   },
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html lang="es">
+      <body className={`${instrumentSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background`}>
+        <JsonLd />
+        <BackgroundVideo />
+        <Navigation />
+        {children}
+        <FooterSection />
+        <Analytics />
+      </body>
+    </html>
+  )
 }
