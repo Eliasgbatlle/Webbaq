@@ -50,7 +50,7 @@ export const services: Service[] = [
     faq: [
       {
         question: "¿Cuánto cuesta una página web en Barranquilla?",
-        answer: "Desde $60.000/mes con todo incluido: hosting, dominio, SEO local, SSL y soporte por WhatsApp. No hay costos ocultos ni contratos de permanencia.",
+        answer: "Desde $90.000/mes con todo incluido: hosting, dominio, SEO local, SSL y soporte por WhatsApp. No hay costos ocultos ni contratos de permanencia.",
       },
       {
         question: "¿Cuánto tiempo tarda en estar lista mi web?",

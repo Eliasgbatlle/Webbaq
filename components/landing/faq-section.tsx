@@ -11,7 +11,7 @@ import {
 const faqs = [
   {
     question: "¿Cuánto cuesta una página web en Barranquilla?",
-    answer: "Nuestros planes empiezan desde $60.000/mes para una página básica de presencia. El plan Profesional con catálogo de productos está desde $100.000/mes, y si necesitas tienda online con pasarela de pagos, desde $220.000/mes. Todos incluyen hosting, SSL, SEO local y soporte por WhatsApp.",
+    answer: "Nuestros planes empiezan desde $60.000/mes para una página básica. El plan Presencia con dominio personalizado está desde $90.000/mes, el plan Profesional con catálogo de productos desde $130.000/mes, y si necesitas tienda online con pasarela de pagos, desde $270.000/mes. Todos incluyen hosting, SSL, SEO local y soporte por WhatsApp.",
   },
   {
     question: "¿Cuánto tiempo tarda en estar lista mi web?",
@@ -74,27 +74,24 @@ export function FaqSection() {
               FAQ
             </span>
             <h2
-              className={`text-4xl md:text-5xl font-display tracking-tight leading-[1.05] mb-6 transition-all duration-1000 ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className={`text-4xl md:text-5xl font-display tracking-tight leading-[1.05] mb-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+                }`}
             >
               Preguntas frecuentes
             </h2>
-            <p className={`text-muted-foreground leading-relaxed transition-all duration-1000 delay-200 ${
-              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-            }`}>
+            <p className={`text-muted-foreground leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+              }`}>
               Resolvemos todas tus dudas sobre diseño web, tiendas online y precios en Barranquilla y el Atlántico.
             </p>
           </div>
 
           {/* FAQ Accordion - Right side */}
-          <div className={`lg:col-span-8 transition-all duration-1000 delay-300 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}>
+          <div className={`lg:col-span-8 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}>
             <Accordion type="single" collapsible className="space-y-4">
               {faqs.map((faq, index) => (
-                <AccordionItem 
-                  key={index} 
+                <AccordionItem
+                  key={index}
                   value={`item-${index}`}
                   className="border border-foreground/10 px-6 data-[state=open]:border-emerald-500/30 data-[state=open]:bg-emerald-500/5 transition-colors"
                 >

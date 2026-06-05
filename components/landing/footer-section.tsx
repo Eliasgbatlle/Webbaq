@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUpRight, MessageCircle, Mail, MapPin } from "lucide-react";
 
 const footerLinks = {
@@ -54,6 +55,9 @@ function FacebookIcon({ className }: Readonly<{ className?: string }>) {
 }
 
 export function FooterSection() {
+  const pathname = usePathname();
+  const isContactPage = pathname === "/contacto";
+
   return (
     <footer className="relative">
       <div className="relative w-full h-[360px] md:h-[420px] overflow-hidden">
@@ -161,19 +165,21 @@ export function FooterSection() {
               ))}
 
               {/* CTA Column */}
-              <div className="lg:col-span-3">
-                <h3 className="text-sm font-medium text-white mb-6">Empieza hoy</h3>
-                <p className="text-sm text-white/40 mb-6">
-                  Consigue tu página web profesional con SEO local incluido.
-                </p>
-                <Link
-                  href="/contacto"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium transition-colors"
-                >
-                  Quiero mi web
-                  <ArrowUpRight className="w-4 h-4" />
-                </Link>
-              </div>
+              {!isContactPage && (
+                <div className="lg:col-span-3">
+                  <h3 className="text-sm font-medium text-white mb-6">Empieza hoy</h3>
+                  <p className="text-sm text-white/40 mb-6">
+                    Consigue tu página web profesional con SEO local incluido.
+                  </p>
+                  <Link
+                    href="/contacto"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white text-sm font-medium transition-colors"
+                  >
+                    Quiero mi web
+                    <ArrowUpRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 

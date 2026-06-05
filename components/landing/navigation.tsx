@@ -63,6 +63,18 @@ export function Navigation() {
     };
   }, []);
 
+  // Bloquear scroll del body cuando el menú mobile está abierto
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
+
   const serviceLinks = services.map((s) => ({
     name: s.shortTitle,
     href: `/servicios/${s.slug}`,
@@ -172,19 +184,21 @@ export function Navigation() {
           </div>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center gap-4">
-            <Link href="/contacto">
-              <Button
-                size="sm"
-                className={`rounded-full transition-all duration-500 ${isScrolled
-                  ? "bg-emerald-500 hover:bg-emerald-600 text-white px-4 h-8 text-xs"
-                  : "bg-emerald-500 hover:bg-emerald-600 text-white px-6"
-                  }`}
-              >
-                Quiero mi web
-              </Button>
-            </Link>
-          </div>
+          {!isContactPage && (
+            <div className="hidden md:flex items-center gap-4">
+              <Link href="/contacto">
+                <Button
+                  size="sm"
+                  className={`rounded-full transition-all duration-500 ${isScrolled
+                    ? "bg-emerald-500 hover:bg-emerald-600 text-white px-4 h-8 text-xs"
+                    : "bg-emerald-500 hover:bg-emerald-600 text-white px-6"
+                    }`}
+                >
+                  Quiero mi web
+                </Button>
+              </Link>
+            </div>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -209,7 +223,7 @@ export function Navigation() {
           }`}
         style={{ top: 0 }}
       >
-        <div className="flex flex-col h-full px-8 pt-28 pb-8">
+        <div className="flex flex-col h-full px-8 pt-28 pb-8 overflow-y-auto">
           {/* Navigation Links */}
           <div className="flex-1 flex flex-col justify-center gap-8">
             {/* Inicio — siempre visible en mobile */}
@@ -287,19 +301,21 @@ export function Navigation() {
           </div>
 
           {/* Bottom CTAs */}
-          <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${isMobileMenuOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-4"
-            }`}
-          >
-            <Link href="/contacto" className="flex-1" onClick={() => setIsMobileMenuOpen(false)}>
-              <Button
-                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-full h-14 text-base"
-              >
-                Quiero mi web
-              </Button>
-            </Link>
-          </div>
+          {!isContactPage && (
+            <div className={`flex gap-4 pt-8 border-t border-foreground/10 transition-all duration-500 ${isMobileMenuOpen
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-4"
+              }`}
+            >
+              <Link href="/contacto" className="flex-1" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-white rounded-full h-14 text-base"
+                >
+                  Quiero mi web
+                </Button>
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </header>

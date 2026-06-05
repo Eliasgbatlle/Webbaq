@@ -192,7 +192,10 @@ export function PricingSection() {
                   </ul>
 
                   {/* CTA */}
-                  <button
+                  <a
+                    href={`https://wa.me/573022805235?text=${encodeURIComponent(`Me interesa obtener el plan ${plan.name}${currentOption.name !== "Con dominio personalizado" ? ` - ${currentOption.name}` : ""} (${formatPrice(currentOption.price)}/mes)`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={`w-full py-4 flex items-center justify-center gap-2 text-sm font-medium transition-all group ${plan.highlight
                       ? "bg-emerald-500 text-white hover:bg-emerald-600"
                       : "border border-foreground/20 text-foreground hover:border-emerald-500 hover:text-emerald-400"
@@ -200,7 +203,7 @@ export function PricingSection() {
                   >
                     Quiero este plan
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </button>
+                  </a>
                 </div>
               </div>
             );
