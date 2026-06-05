@@ -1,5 +1,7 @@
 import { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
 
 // Servicios estáticos para el sitemap
