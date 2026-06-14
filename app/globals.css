@@ -94,6 +94,22 @@
   }
 }
 
+.prose {
+  --tw-prose-body: oklch(0.94 0.005 90 / 0.9);
+  --tw-prose-headings: oklch(0.94 0.005 90);
+  --tw-prose-links: #34d399;
+  --tw-prose-bold: oklch(0.94 0.005 90);
+  --tw-prose-code: oklch(0.94 0.005 90);
+  --tw-prose-quotes: oklch(0.94 0.005 90 / 0.9);
+  --tw-prose-quote-borders: oklch(0.18 0.008 260);
+  --tw-prose-hr: oklch(0.18 0.008 260);
+  --tw-prose-th-borders: oklch(0.18 0.008 260);
+  --tw-prose-td-borders: oklch(0.18 0.008 260);
+  --tw-prose-bullets: oklch(0.94 0.005 90 / 0.9);
+  --tw-prose-counters: oklch(0.94 0.005 90 / 0.9);
+  --tw-prose-lead: oklch(0.94 0.005 90 / 0.9);
+}
+
 @layer utilities {
   .font-display {
     font-family: var(--font-display);

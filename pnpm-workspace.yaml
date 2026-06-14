@@ -375,5 +375,4 @@ allowBuilds:
 
 packages:
   - .
-  - medusa-server
 minimumReleaseAge: 1440
