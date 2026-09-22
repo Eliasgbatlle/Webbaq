@@ -25,6 +25,10 @@ export function AsciiScene() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    // Tamaño en caché: se mide al redimensionar, no en cada frame
+    let viewW = 0;
+    let viewH = 0;
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const rect = canvas.parentElement?.getBoundingClientRect();
@@ -35,6 +39,8 @@ export function AsciiScene() {
       ctx.scale(dpr, dpr);
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
+      viewW = w;
+      viewH = h;
     };
 
     resize();
@@ -126,12 +132,16 @@ export function AsciiScene() {
       if (!isAnimating.current) return;
       
       const now = performance.now();
+      // Unos 30 fps bastan para una animación de fondo y reducen a la mitad el trabajo del hilo principal
+      if (now - lastFrameTime.current < 33) {
+        frameRef.current = requestAnimationFrame(render);
+        return;
+      }
       const delta = (now - lastFrameTime.current) / 1000; // delta in seconds
       lastFrameTime.current = now;
 
-      const rect = canvas.getBoundingClientRect();
-      const width = rect.width || canvas.offsetWidth;
-      const height = rect.height || canvas.offsetHeight;
+      const width = viewW || canvas.offsetWidth;
+      const height = viewH || canvas.offsetHeight;
 
       const centerX = width * 0.5;
       const centerY = height * 0.5;
@@ -152,7 +162,7 @@ export function AsciiScene() {
         .sort((a, b) => a.z - b.z);
 
       const charSize = Math.max(14, Math.min(width, height) * 0.03);
-      ctx.font = `${charSize}px "Geist Mono", monospace`;
+      ctx.font = `${charSize}px monospace`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
 

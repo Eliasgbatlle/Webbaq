@@ -55,7 +55,7 @@ export function Navigation() {
         setIsServicesOpen(false);
       }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       window.removeEventListener("scroll", handleScroll);

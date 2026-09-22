@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, MessageCircle, Mail, MapPin } from "lucide-react";
 
@@ -62,14 +61,16 @@ export function FooterSection() {
   return (
     <footer className="relative">
       <div className="relative w-full h-[360px] md:h-[420px] overflow-hidden">
-        <Image
-          src="/images/Footerimg.png"
-          alt="WebBAQ - Diseño web y SEO en Barranquilla"
-          fill
-          quality={75}
-          sizes="100vw"
-          className="object-cover object-center"
-        />
+        <picture>
+          <source media="(max-width: 828px)" srcSet="/images/footer-mobile.webp" />
+          <img
+            src="/images/footer.webp"
+            alt="WebBAQ - Diseño web y SEO en Barranquilla"
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 w-full h-full object-cover object-center"
+          />
+        </picture>
         {/* Gradient fade to black at bottom */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black" />
       </div>

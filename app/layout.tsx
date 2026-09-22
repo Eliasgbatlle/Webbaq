@@ -1,7 +1,6 @@
 import React from "react"
 import type { Metadata } from 'next'
 import { Instrument_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { BackgroundVideo } from "@/components/landing/BackgroundVideo"
 import { JsonLd } from "@/components/JsonLd"
@@ -10,18 +9,23 @@ import { FooterSection } from "@/components/landing/footer-section"
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
-  variable: '--font-instrument'
+  variable: '--font-instrument',
+  display: 'swap',
 });
 
 const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: "400",
-  variable: '--font-instrument-serif'
+  variable: '--font-instrument-serif',
+  display: 'swap',
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: '--font-jetbrains'
+  variable: '--font-jetbrains',
+  display: 'swap',
+  // No aparece en la primera pantalla: no compite con el contenido principal
+  preload: false,
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
@@ -71,7 +75,6 @@ export default function RootLayout({
         <Navigation />
         {children}
         <FooterSection />
-        <Analytics />
       </body>
     </html>
   )

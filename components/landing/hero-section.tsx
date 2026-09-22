@@ -3,49 +3,26 @@
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import dynamic from "next/dynamic";
 import { ArrowRight, MapPin, Clock, Shield, CreditCard } from "lucide-react";
 
-import { AsciiScene } from "./ascii-scene";
+// La animación ASCII es decorativa: va en su propio chunk y no bloquea el primer render
+const AsciiScene = dynamic(() => import("./ascii-scene").then((m) => m.AsciiScene), { ssr: false });
 
 const words = ["restaurantes", "tiendas", "salones", "gimnasios"];
 
-function BlurWord({ word, trigger }: Readonly<{ word: string; trigger: number }>) {
-  const letters = word.split("");
-  const [letterStates, setLetterStates] = useState<{ opacity: number; blur: number }[]>(
-    letters.map(() => ({ opacity: 0, blur: 20 }))
-  );
-
-  useEffect(() => {
-    setLetterStates(letters.map(() => ({ opacity: 0, blur: 20 })));
-
-    function tickLetter(index: number, startTime: number, now: number) {
-      const progress = Math.min((now - startTime) / 500, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      setLetterStates(prev => {
-        const next = [...prev];
-        next[index] = { opacity: eased, blur: 20 * (1 - eased) };
-        return next;
-      });
-      if (progress < 1) requestAnimationFrame((t) => tickLetter(index, startTime, t));
-    }
-
-    letters.forEach((_, i) => {
-      setTimeout(() => requestAnimationFrame((t) => tickLetter(i, t, t)), i * 45);
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trigger]);
-
+function BlurWord({ word, animate }: Readonly<{ word: string; animate: boolean }>) {
+  // La primera palabra llega visible en el HTML; las siguientes entran con animación CSS
   return (
     <>
-      {letters.map((char, i) => (
+      {word.split("").map((char, i) => (
         <span
           key={`${char}-${i}`}
+          className={animate ? "hero-blur-letter" : undefined}
           style={{
             display: "inline-block",
-            opacity: letterStates[i]?.opacity ?? 0,
-            filter: `blur(${letterStates[i]?.blur ?? 20}px)`,
             color: "#10b981",
-            transition: "color 0.4s ease",
+            animationDelay: animate ? `${i * 45}ms` : undefined,
           }}
         >
           {char}
@@ -56,10 +33,30 @@ function BlurWord({ word, trigger }: Readonly<{ word: string; trigger: number }>
 }
 
 export function HeroSection() {
-  const [isVisible, setIsVisible] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
+  const [hasRotated, setHasRotated] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const [isHeroVisible, setIsHeroVisible] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(false);
+
+  // Espera a que la página termine de cargar y el navegador esté libre antes de arrancar la animación
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let idleId: number | undefined;
+    const start = () => {
+      idleId = window.requestIdleCallback
+        ? window.requestIdleCallback(() => setCanAnimate(true), { timeout: 2000 })
+        : window.setTimeout(() => setCanAnimate(true), 200);
+    };
+    if (document.readyState === "complete") start();
+    else window.addEventListener("load", start, { once: true });
+    return () => {
+      window.removeEventListener("load", start);
+      if (idleId === undefined) return;
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+      else window.clearTimeout(idleId);
+    };
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -81,11 +78,8 @@ export function HeroSection() {
   }, []);
 
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
-
-  useEffect(() => {
     const interval = setInterval(() => {
+      setHasRotated(true);
       setWordIndex((prev) => (prev + 1) % words.length);
     }, 2500);
     return () => clearInterval(interval);
@@ -95,7 +89,7 @@ export function HeroSection() {
     <section ref={sectionRef} className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-black py-16">
       {/* Background 3D model */}
       <div className="absolute inset-0 z-0">
-        {isHeroVisible && <AsciiScene />}
+        {canAnimate && isHeroVisible && <AsciiScene />}
         {/* Overlay gradients */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
@@ -103,7 +97,7 @@ export function HeroSection() {
       </div>
 
       {/* Macbook Scene - Fullscreen absolute */}
-      <div className={`absolute inset-0 z-10 pointer-events-none transition-opacity duration-1000 delay-300 hidden lg:block ${isVisible ? "opacity-100" : "opacity-0"}`}>
+      <div className={"absolute inset-0 z-10 pointer-events-none hidden lg:block"}>
 
       </div>
 
@@ -131,8 +125,7 @@ export function HeroSection() {
           <div className="pointer-events-auto">
             {/* Location badge */}
             <div
-              className={`mb-8 transition-all duration-700 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+              className={"mb-8 hero-in"}
             >
               <span className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-sm text-emerald-400">
                 <MapPin className="w-4 h-4" />
@@ -143,14 +136,13 @@ export function HeroSection() {
             {/* Main headline */}
             <div className="mb-8">
               <h1
-                className={`text-left text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display leading-[1.05] tracking-tight text-white transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                  }`}
+                className={"text-left text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display leading-[1.05] tracking-tight text-white hero-rise"}
               >
                 <span className="block">Diseño web y SEO local</span>
                 <span className="block">
                   para{" "}
                   <span className="relative inline-block">
-                    <BlurWord word={words[wordIndex]} trigger={wordIndex} />
+                    <BlurWord key={wordIndex} word={words[wordIndex]} animate={hasRotated} />
                   </span>
                 </span>
                 <span className="block text-white/60">en Colombia</span>
@@ -159,16 +151,14 @@ export function HeroSection() {
 
             {/* Subtitle */}
             <p
-              className={`text-lg lg:text-xl text-white/60 mb-10 max-w-lg leading-relaxed transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+              className={"text-lg lg:text-xl text-white/60 mb-10 max-w-lg leading-relaxed hero-in [animation-delay:150ms]"}
             >
               Diseñamos tu web, la posicionamos en Google y te ayudamos a conseguir clientes.
             </p>
 
             {/* CTAs */}
             <div
-              className={`flex flex-col sm:flex-row gap-4 mb-10 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                }`}
+              className={"flex flex-col sm:flex-row gap-4 mb-10 hero-in [animation-delay:250ms]"}
             >
               <Link href="/contacto">
                 <Button
@@ -192,8 +182,7 @@ export function HeroSection() {
 
             {/* Trust badges */}
             <div
-              className={`flex flex-wrap gap-6 text-sm text-white/50 transition-all duration-1000 delay-400 ${isVisible ? "opacity-100" : "opacity-0"
-                }`}
+              className={"flex flex-wrap gap-6 text-sm text-white/50 hero-in [animation-delay:350ms]"}
             >
               <span className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-emerald-400" />
@@ -211,8 +200,7 @@ export function HeroSection() {
 
             {/* Stats bar */}
             <div
-              className={`transition-all duration-700 delay-500 ${isVisible ? "opacity-100" : "opacity-0"
-                }`}
+              className={"hero-in [animation-delay:450ms]"}
             >
               <div className="max-w-[1400px] mx-auto px-0 lg:px-0 py-6">
                 <div className="flex flex-wrap items-center justify-left lg:justify-start gap-5 lg:gap-10">

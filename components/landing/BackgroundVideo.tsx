@@ -1,60 +1,76 @@
 "use client";
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export function BackgroundVideo() {
-  const [videoOpacity, setVideoOpacity] = useState(0);
-  const [overlayOpacity, setOverlayOpacity] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const video = videoRef.current;
+    const overlay = overlayRef.current;
+    if (!video || !overlay) return;
+
+    // Sin video para quien pide menos movimiento o ahorro de datos
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData;
+    const skipVideo = reduceMotion || saveData;
+
+    let loaded = false;
+    let ticking = false;
+
+    // El video empieza invisible, así que solo se descarga cuando el usuario hace scroll
+    const loadVideo = () => {
+      if (loaded || skipVideo) return;
+      loaded = true;
+      video.src = '/videos/background.mp4';
+      video.playbackRate = 0.75;
+      video.play().catch(() => {});
+    };
+
+    const update = () => {
+      ticking = false;
+      // Progreso del scroll a través de la sección del héroe (de 0 a 1)
+      const progress = Math.min(window.scrollY / window.innerHeight, 1);
+      if (progress > 0) loadVideo();
+      // La opacidad del vídeo va de 0 a 0.6 y la capa negra de 1 a 0
+      video.style.opacity = String(progress * 0.6);
+      overlay.style.opacity = String(1 - progress);
+    };
+
     const handleScroll = () => {
-      const heroHeight = window.innerHeight;
-      const scrollY = window.scrollY;
-      
-      // Calcula el progreso del scroll a través de la sección del héroe (de 0 a 1)
-      const progress = Math.min(scrollY / heroHeight, 1);
-
-      // La opacidad del vídeo va de 0 a 0.6
-      setVideoOpacity(progress * 0.6);
-
-      // La opacidad de la capa negra va de 1 a 0
-      setOverlayOpacity(1 - progress);
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Llama una vez al montar para establecer el estado inicial en caso de recarga
-    handleScroll();
+    // Estado inicial en caso de recarga con scroll
+    update();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      // Ralentiza el vídeo para un efecto más sutil
-      videoRef.current.playbackRate = 0.75;
-    }
-  }, []);
-
   return (
     <>
       {/* Capa de fundido desde negro */}
       <div
+        ref={overlayRef}
         className="fixed top-0 left-0 w-full h-full bg-black"
-        style={{ opacity: overlayOpacity, zIndex: -9 }}
+        style={{ opacity: 1, zIndex: -9 }}
       />
       {/* Vídeo de fondo */}
       <video
         ref={videoRef}
-        src="/videos/background.mp4"
-        autoPlay
         loop
         muted
+        playsInline
+        preload="none"
+        aria-hidden="true"
         className="fixed top-0 left-0 w-full h-full object-cover"
-        style={{ opacity: videoOpacity, zIndex: -10 }}
+        style={{ opacity: 0, zIndex: -10 }}
       />
     </>
   );

@@ -221,3 +221,24 @@
     100% { background-position: 0% 50%; }
   }
 }
+/* Entrada del hero en CSS puro: no espera a que cargue JavaScript */
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(1rem); }
+  to { opacity: 1; transform: none; }
+}
+/* El titular solo se desplaza: sigue visible desde el primer pintado (LCP) */
+@keyframes hero-rise {
+  from { transform: translateY(1.5rem); }
+  to { transform: none; }
+}
+@keyframes hero-blur-letter {
+  from { opacity: 0; filter: blur(20px); }
+  to { opacity: 1; filter: blur(0); }
+}
+.hero-in { animation: hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-rise { animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.hero-blur-letter { animation: hero-blur-letter 0.5s cubic-bezier(0.33, 1, 0.68, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in, .hero-rise, .hero-blur-letter { animation: none; }
+}
