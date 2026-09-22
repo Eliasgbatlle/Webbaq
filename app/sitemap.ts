@@ -1,18 +1,9 @@
 import { MetadataRoute } from "next";
+import { services } from "@/lib/services";
 
 export const dynamic = "force-static";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://webbaq.dev";
-
-// Servicios estáticos para el sitemap
-const servicios = [
-  { slug: "diseno-web" },
-  { slug: "desarrollo-web" },
-  { slug: "seo" },
-  { slug: "marketing-digital" },
-  { slug: "consultoria" },
-  { slug: "mantenimiento" },
-];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [
@@ -30,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const servicePages = servicios.map((servicio) => ({
+  const servicePages = services.map((servicio) => ({
     url: `${baseUrl}/servicios/${servicio.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,

@@ -51,6 +51,24 @@ function ServiceSchema({ service }: Readonly<{ service: Service }>) {
   )
 }
 
+function FaqSchema({ service }: Readonly<{ service: Service }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: service.faq.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  }
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  )
+}
+
 function BreadcrumbSchema({ service }: Readonly<{ service: Service }>) {
   const jsonLd = {
     "@context": "https://schema.org",
@@ -87,13 +105,11 @@ export function generateServiceMetadata(service: Service) {
     title: baseTitle,
     description: baseDescription,
     keywords: [
+      ...service.keywords,
       service.shortTitle.toLowerCase(),
       "barranquilla",
       "atlántico",
       "colombia",
-      "diseño web",
-      "páginas web",
-      "seo local",
       ...service.idealFor.map((i) => i.toLowerCase()),
     ],
     openGraph: {
@@ -103,9 +119,8 @@ export function generateServiceMetadata(service: Service) {
       siteName: "WebBAQ",
       locale: "es_CO",
       type: "website",
-      images: [{ url: `${siteUrl}/placeholder.jpg`, width: 1200, height: 630, alt: `${service.title} - WebBAQ` }],
     },
-    twitter: { card: "summary_large_image" as const, title: baseTitle, description: baseDescription, images: [`${siteUrl}/placeholder.jpg`] },
+    twitter: { card: "summary_large_image" as const, title: baseTitle, description: baseDescription },
     alternates: { canonical: url },
   }
 }
@@ -118,6 +133,7 @@ export function ServicePage({ slug }: Readonly<{ slug: string }>) {
   return (
     <>
       <ServiceSchema service={service} />
+      <FaqSchema service={service} />
       <BreadcrumbSchema service={service} />
       <main className="relative min-h-screen">
         {/* Hero */}

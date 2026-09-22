@@ -5,6 +5,7 @@ export interface Service {
   description: string
   shortDescription: string
   icon: string
+  keywords: string[]
   features: string[]
   benefits: string[]
   idealFor: string[]
@@ -21,6 +22,13 @@ export const services: Service[] = [
     shortDescription:
       "Páginas web profesionales con SEO local, hosting y dominio incluidos. Listas en 3-7 días.",
     icon: "Globe",
+    keywords: [
+      "cuánto cuesta una página web en barranquilla",
+      "páginas web para negocios en barranquilla",
+      "diseño web barranquilla precio",
+      "diseño de páginas web barranquilla",
+      "crear página web para mi negocio barranquilla",
+    ],
     features: [
       "Diseño responsive (celular, tablet, escritorio)",
       "Optimización SEO local para Barranquilla",
@@ -71,6 +79,13 @@ export const services: Service[] = [
     shortDescription:
       "Vende online con carrito de compras, pasarela de pagos (Nequi, PSE, tarjeta) y envíos por WhatsApp.",
     icon: "ShoppingCart",
+    keywords: [
+      "tienda online barranquilla",
+      "crear tienda virtual barranquilla",
+      "ecommerce barranquilla precio",
+      "vender por internet barranquilla",
+      "página web para vender productos barranquilla",
+    ],
     features: [
       "Catálogo de productos ilimitado",
       "Carrito de compras profesional",
@@ -121,6 +136,13 @@ export const services: Service[] = [
     shortDescription:
       "Aparece en Google cuando buscan tu negocio en Barranquilla. Optimización SEO local completa.",
     icon: "Search",
+    keywords: [
+      "seo barranquilla",
+      "posicionamiento en google barranquilla",
+      "agencia seo barranquilla",
+      "posicionar mi negocio en google barranquilla",
+      "seo local atlántico",
+    ],
     features: [
       "Optimización SEO on-page completa",
       "Google My Business optimizado",
@@ -171,6 +193,12 @@ export const services: Service[] = [
     shortDescription:
       "Páginas de aterrizaje optimizadas para convertir visitantes en clientes. Para campañas y promociones.",
     icon: "Target",
+    keywords: [
+      "landing page barranquilla",
+      "página de aterrizaje barranquilla",
+      "landing page para anuncios barranquilla",
+      "crear landing page colombia",
+    ],
     features: [
       "Diseño enfocado en conversión",
       "Llamadas a la acción estratégicas",
@@ -221,6 +249,12 @@ export const services: Service[] = [
     shortDescription:
       "Actualizamos tu sitio web antiguo a una página moderna, rápida y optimizada para celulares y SEO.",
     icon: "RefreshCw",
+    keywords: [
+      "rediseño de página web barranquilla",
+      "actualizar mi página web barranquilla",
+      "renovar sitio web colombia",
+      "mi página web no funciona en el celular",
+    ],
     features: [
       "Análisis completo del sitio actual",
       "Diseño moderno y profesional",
@@ -271,6 +305,12 @@ export const services: Service[] = [
     shortDescription:
       "Hosting rápido, SSL, mantenimiento mensual y soporte por WhatsApp. Tu web siempre funcionando perfecto.",
     icon: "Server",
+    keywords: [
+      "hosting para página web barranquilla",
+      "mantenimiento de páginas web barranquilla",
+      "soporte técnico web colombia",
+      "hosting con soporte en barranquilla",
+    ],
     features: [
       "Hosting rápido y estable",
       "Certificado SSL automatizado",
