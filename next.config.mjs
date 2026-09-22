@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Export estatico: el build genera out/ y Coolify lo sirve con nginx.
+  output: "export",
   typescript: {
     ignoreBuildErrors: true,
   },
   images: {
+    // next/image no tiene servidor que optimice en un export estatico.
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -11,22 +15,7 @@ const nextConfig = {
       },
     ],
   },
-  async headers() {
-    return [
-      {
-        source: "/videos/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=86400" },
-        ],
-      },
-      {
-        source: "/images/:path*",
-        headers: [
-          { key: "Cache-Control", value: "public, max-age=86400" },
-        ],
-      },
-    ]
-  },
+  // Sin headers(): las cabeceras de cache de /videos y /images las pone nginx.
 }
 
 export default nextConfig

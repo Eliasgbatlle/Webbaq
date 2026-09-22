@@ -161,24 +161,6 @@ export function Navigation() {
                 )}
               </div>
 
-              {/* Blog Link */}
-              <Link
-                href="/blog"
-                className={`text-sm transition-colors duration-300 relative group ${getLinkStyle(pathname.startsWith("/blog"), isScrolled)}`}
-              >
-                Blog
-                <span className={`absolute -bottom-1 left-0 h-px transition-all duration-300 ${getUnderlineStyle(pathname.startsWith("/blog"), isScrolled)}`} />
-              </Link>
-
-              {/* Productos Link */}
-              <Link
-                href="/productos"
-                className={`text-sm transition-colors duration-300 relative group ${getLinkStyle(pathname.startsWith("/productos"), isScrolled)}`}
-              >
-                Productos
-                <span className={`absolute -bottom-1 left-0 h-px transition-all duration-300 ${getUnderlineStyle(pathname.startsWith("/productos"), isScrolled)}`} />
-              </Link>
-
               {/* Contacto Link */}
               <Link
                 href="/contacto"
@@ -294,30 +276,6 @@ export function Navigation() {
                 })}
               </div>
             </div>
-
-            {/* Blog en mobile */}
-            <Link
-              href="/blog"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`text-4xl font-display transition-all duration-500 ${pathname.startsWith("/blog")
-                ? "text-emerald-400 cursor-default pointer-events-none"
-                : "text-foreground hover:text-emerald-400"
-                } ${isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-            >
-              Blog
-            </Link>
-
-            {/* Productos en mobile */}
-            <Link
-              href="/productos"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className={`text-4xl font-display transition-all duration-500 ${pathname.startsWith("/productos")
-                ? "text-emerald-400 cursor-default pointer-events-none"
-                : "text-foreground hover:text-emerald-400"
-                } ${isMobileMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-            >
-              Productos
-            </Link>
 
             {/* Contacto en mobile */}
             <Link
